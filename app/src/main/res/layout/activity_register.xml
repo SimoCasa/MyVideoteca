@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Benvenuto!"
-                android:textColor="@color/my_primary"
+                android:textColor="@color/my_secondary"
                 android:textSize="32sp"
                 android:textStyle="bold"/>
 
@@ -80,7 +80,8 @@
             <EditText
                 android:id="@+id/nameField"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/my_secondary"
                 android:inputType="text" />
 
             <TextView
@@ -92,7 +93,8 @@
             <EditText
                 android:id="@+id/surnameField"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/my_secondary"
                 android:inputType="text" />
 
             <TextView
@@ -105,6 +107,7 @@
                 android:id="@+id/emailField"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:backgroundTint="@color/my_secondary"
                 android:inputType="textEmailAddress" />
 
             <TextView
@@ -116,7 +119,8 @@
             <EditText
                 android:id="@+id/passwordField"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/my_secondary"
                 android:inputType="textPassword" />
 
             <View
@@ -128,6 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Registrati"
+                android:textColor="@color/white"
                 app:cornerRadius="32dp"/>
 
         </LinearLayout>
