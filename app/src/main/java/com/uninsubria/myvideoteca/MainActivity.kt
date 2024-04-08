@@ -1,62 +1,77 @@
 package com.uninsubria.myvideoteca
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
-import com.uninsubria.myvideoteca.databinding.ActivityMainBinding
-
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
+    private var check=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val emailLogin = findViewById<EditText>(R.id.emailField)
+        val passwordLogin = findViewById<EditText>(R.id.passwordField)
 
-        setSupportActionBar(binding.appBarMain.toolbar)
-
-        binding.appBarMain.fab.setOnClickListener {
-
-            // definisco la mia intent dando come parametri l'activity corrente e quella che voglio aprire
-            val openLogin = Intent(this, LoginActivity::class.java)
-            // attivazione dell'activity di Login
-            startActivity(openLogin)
+        //Controllo su casella email
+        emailLogin.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val email = emailLogin.text.toString().trim()
+                //Controllo validità indirizzo email
+                if (!isValidEmail(email)) {
+                    emailLogin.error = "Indirizzo email non valido"
+                    check = false
+                }else{
+                    emailLogin.error = null  // Rimuove il messaggio di errore, se presente
+                    emailLogin.backgroundTintList = ColorStateList.valueOf(Color.GREEN) // Imposta il colore del bordo a verde
+                    check=true
+                }
+            }
         }
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        //Bottone per la Registrazione
+        val regButton = findViewById<Button>(R.id.registerButton)
+        regButton.setOnClickListener{
+            val openReg = Intent(this, RegisterActivity::class.java)
+            // attivazione dell'activity di Login
+            startActivity(openReg)
+        }
+
+        //Bottone per la Login
+        val logButton = findViewById<Button>(R.id.loginButton)
+        logButton.setOnClickListener{
+            val email = emailLogin.text.toString()
+            val password = passwordLogin.text.toString()
+            if(formatChecks(email,password)){
+                login(email,password)
+            }else{
+                Toast.makeText(applicationContext, "I dati inseriti non sono validi", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
+    //LOGIN TRAMITE DB che se avvenuto con successo apre un'Intent sulla HOMEPAGE altrimenti manda un messaggio TOAST
+    private fun login(email: String, password: String){
+        //mostro testo prova
+        Toast.makeText(applicationContext, "Andato in login", Toast.LENGTH_SHORT).show()
+        //continuo
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    //Controllo che i campi non siano vuoti (l'email è controllata dalla variabile check)
+    private fun formatChecks(emailLogin: String, passwordLogin: String): Boolean {
+        return emailLogin.isNotBlank() && passwordLogin.isNotBlank() && check
+    }
+
+    //Controllo che la mail sia formattata correttamente
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        return email.matches(emailPattern.toRegex())
     }
 }
