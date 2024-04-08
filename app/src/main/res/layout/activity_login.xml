@@ -69,14 +69,15 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email Address"
+                android:text="Email"
                 android:alpha="0.7"
                 android:textStyle="bold"/>
-
             <EditText
+                android:id="@+id/emailField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"/>
@@ -84,14 +85,15 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password"
                 android:alpha="0.7"
                 android:textStyle="bold"/>
-
             <EditText
+                android:id="@+id/passwordField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"/>
@@ -101,6 +103,7 @@
                 android:layout_height="10dp"/>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Accedi"
@@ -108,7 +111,7 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"/>
+                android:layout_height="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,12 +119,16 @@
                 android:layout_gravity="center"
                 android:alpha="0.7"
                 android:text="oppure registrati qui sotto" />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"/>
 
             <com.google.android.material.button.MaterialButton
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:text="Registrati"
-                    app:cornerRadius="32dp"/>
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Registrati"
+                app:cornerRadius="32dp"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

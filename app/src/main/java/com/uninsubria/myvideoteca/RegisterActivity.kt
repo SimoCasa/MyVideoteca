@@ -8,21 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(){
     private var check=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_register)
 
-        val regButton = findViewById<Button>(R.id.registerButton)
-
-        regButton.setOnClickListener{
-            val openReg = Intent(this, RegisterActivity::class.java)
-            // attivazione dell'activity di Login
-            startActivity(openReg)
-        }
-
-        //Controllo su casella email
         val emailEditText = findViewById<EditText>(R.id.emailField)
         emailEditText.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
@@ -38,7 +29,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun isValidEmail(email: String): Boolean {
