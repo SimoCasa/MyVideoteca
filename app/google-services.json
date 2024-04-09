@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "910704269719",
+    "project_id": "myvideoteca-fd440",
+    "storage_bucket": "myvideoteca-fd440.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910704269719:android:ec01b55c2a19f6d0de4cd2",
+        "android_client_info": {
+          "package_name": "com.uninsubria.myvideoteca"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJjqHP0r-qi9IPJgpWZM4cdLg1klgsvow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

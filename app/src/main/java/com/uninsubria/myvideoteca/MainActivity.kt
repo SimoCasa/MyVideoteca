@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -16,9 +17,10 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private var check=false
     private lateinit var appDb : AppDatabase
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        auth = FirebaseAuth.getInstance()
         setContentView(R.layout.activity_login)
         appDb = AppDatabase.getDatabase(this)
         addSampleUsers()
@@ -65,9 +67,17 @@ class MainActivity : AppCompatActivity() {
 
     //LOGIN TRAMITE DB che se avvenuto con successo apre un'Intent sulla HOMEPAGE altrimenti manda un messaggio TOAST
     private fun login(email: String, password: String){
-        //mostro testo prova
-        Toast.makeText(applicationContext, "Andato in login", Toast.LENGTH_SHORT).show()
-        //continuo
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Login riuscito
+                    Toast.makeText(this, "Login riuscito", Toast.LENGTH_SHORT).show()
+                    // Puoi aggiungere qui il codice per passare alla schermata successiva
+                } else {
+                    // Login fallito
+                    Toast.makeText(this, "Login fallito. Verifica email e password", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     //Controllo che i campi non siano vuoti (l'email è controllata dalla variabile check)
