@@ -1,29 +1,34 @@
 package com.uninsubria.myvideoteca
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
-    private var check=false
-    private lateinit var appDb : AppDatabase
+    // Creazione var per DB Firebase
     private lateinit var auth: FirebaseAuth
+    // Creazione var per dialogo progresso
+    private lateinit var progressDialog : ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
+
+        //Dialogo processo durante la registrazione in Firebase
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Attendere...")
+        progressDialog.setCanceledOnTouchOutside(false)
+        //...
+
         setContentView(R.layout.activity_login)
-        appDb = AppDatabase.getDatabase(this)
-        addSampleUsers()
         val emailLogin = findViewById<EditText>(R.id.emailField)
         val passwordLogin = findViewById<EditText>(R.id.passwordField)
 
@@ -34,11 +39,9 @@ class MainActivity : AppCompatActivity() {
                 //Controllo validità indirizzo email
                 if (!isValidEmail(email)) {
                     emailLogin.error = "Indirizzo email non valido"
-                    check = false
                 }else{
                     emailLogin.error = null  // Rimuove il messaggio di errore, se presente
                     emailLogin.backgroundTintList = ColorStateList.valueOf(Color.GREEN) // Imposta il colore del bordo a verde
-                    check=true
                 }
             }
         }
@@ -62,17 +65,22 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "I dati inseriti non sono validi", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     //LOGIN TRAMITE DB che se avvenuto con successo apre un'Intent sulla HOMEPAGE altrimenti manda un messaggio TOAST
     private fun login(email: String, password: String){
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Login riuscito
-                    Toast.makeText(this, "Login riuscito", Toast.LENGTH_SHORT).show()
-                    // Puoi aggiungere qui il codice per passare alla schermata successiva
+                if (task.isSuccessful) { // Login riuscito
+
+                    // Mostro il progress durante il login
+                    progressDialog.setMessage("Accedo all'account...")
+                    progressDialog.show()
+
+                    val openHome = Intent(this, HomePage::class.java)
+                    // attivazione dell'activity di Login
+                    startActivity(openHome)
+
                 } else {
                     // Login fallito
                     Toast.makeText(this, "Login fallito. Verifica email e password", Toast.LENGTH_SHORT).show()
@@ -80,26 +88,14 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    //Controllo che i campi non siano vuoti (l'email è controllata dalla variabile check)
+    //Controllo che i campi non siano vuoti
     private fun formatChecks(emailLogin: String, passwordLogin: String): Boolean {
-        return emailLogin.isNotBlank() && passwordLogin.isNotBlank() && check
+        return emailLogin.isNotBlank() && passwordLogin.isNotBlank() && isValidEmail(emailLogin)
     }
 
     //Controllo che la mail sia formattata correttamente
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(emailPattern.toRegex())
-    }
-    private fun addSampleUsers() {
-
-        val utente1 = User (
-            null, "Alberto", "prova"
-        )
-        GlobalScope.launch(Dispatchers.IO) {
-            val existingUser = appDb.userDao().getUser(utente1.username.toString(), utente1.password.toString())
-            if (existingUser == null) {
-                appDb.userDao().insertUser(utente1)
-            }
-        }
     }
 }

@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.isInc
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")
     id("com.google.gms.google-services")
 }
 
@@ -57,8 +56,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-runtime")
+
 }
