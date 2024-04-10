@@ -1,22 +1,30 @@
 package com.uninsubria.myvideoteca
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import java.util.HashMap
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 
 class RegisterActivity : AppCompatActivity(){
     // Creazione var per DB Firebase
     private lateinit var firebaseAuth : FirebaseAuth
-    // Creazione var per dialogo progresso
-    private lateinit var progressDialog : ProgressDialog
+    //Creazione dialogo progresso
+    private lateinit var progressBar: CircularProgressIndicator
+    private lateinit var loadingDialog: AlertDialog
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +32,9 @@ class RegisterActivity : AppCompatActivity(){
         firebaseAuth = FirebaseAuth.getInstance() //inizializzazione dell'autenticazione a firebase
 
         //Dialogo processo durante la registrazione in Firebase
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Attendere...")
-        progressDialog.setCanceledOnTouchOutside(false)
+        progressBar = CircularProgressIndicator(this)
         //...
+
         val name = findViewById<EditText>(R.id.nameField) as EditText
         val surname = findViewById<EditText>(R.id.surnameField) as EditText
         val emailRegister = findViewById<EditText>(R.id.emailField) as EditText
@@ -65,24 +72,60 @@ class RegisterActivity : AppCompatActivity(){
 
     //AGGIUNGO TUTTE LE VARIABILI AL DB, SE NON SI CONNETTE O ALTRO NON DEVO ANDARE AVANTI ALLA HOME
     private fun register(name: String, surname: String, emailRegister: String, passwordRegister: String) {
-        //mostro il messaggio di progresso
-        progressDialog.setMessage("Creo l'account...")
-        progressDialog.show()
+
+        // Mostra il dialogo di caricamento
+        loadingDialog = createLoadingDialog("Creo l'account...")
+
         //creo utente in Firebase
         firebaseAuth.createUserWithEmailAndPassword(emailRegister,passwordRegister)
             .addOnSuccessListener {
+                //Richiamo il metodo per inserire le informazioni dell'utente nel Database Dinamico di Firebase
+                updateUser(name,surname,emailRegister,passwordRegister)
+            }
+            .addOnFailureListener {
+                //progressDialog.dismiss()
+                loadingDialog.dismiss()
+                Toast.makeText(applicationContext, "Utente non creato", Toast.LENGTH_SHORT).show()
+            }
+
+    }
+    //Inserisco le informazioni dell'utente nel Database Dinamico di Firebase
+    private fun updateUser(name: String, surname: String, email: String, password: String){
+
+        //mostro il dialogo di progresso
+        loadingDialog.dismiss()
+        loadingDialog = createLoadingDialog("Salvo le informazioni...")
+
+        //prendo il tempo corrente da inserire
+        val timestamp = System.currentTimeMillis()
+        //prendo l'id dell'utente
+        val uid = firebaseAuth.uid
+        //preparo i dati da mettere nel db
+        val hashMap = hashMapOf(
+            "uid" to uid,
+            "email" to email,
+            "name" to name,
+            "surname" to surname,
+            "rule" to "user", // di base impostiamo tutti gli utenti 'User' per poi renderli 'Admin' da DB se necessario
+            "timestamp" to timestamp
+        )
+        //inserisco in Firebase
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(uid!!)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                loadingDialog.dismiss()
                 //account creato con successo e aggiunta informazioni utente nel DB
                 val openHome = Intent(this, HomePage::class.java)
                 // attivazione dell'activity di Login
                 startActivity(openHome)
-                //45:43
+                finish()
             }
-            .addOnFailureListener {e->
-                progressDialog.dismiss()
+            .addOnFailureListener{
+                loadingDialog.dismiss()
                 Toast.makeText(applicationContext, "Utente non creato", Toast.LENGTH_SHORT).show()
-            }
-        //continuo
 
+            }
     }
 
     //Controllo che i campi non siano vuoti
@@ -94,5 +137,14 @@ class RegisterActivity : AppCompatActivity(){
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(emailPattern.toRegex())
+    }
+    //Creo dialogo di caricamento/attesa
+    private fun createLoadingDialog(message: String): AlertDialog {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setMessage(message)
+            .setCancelable(false)
+            .create()
+        dialog.show()
+        return dialog
     }
 }
