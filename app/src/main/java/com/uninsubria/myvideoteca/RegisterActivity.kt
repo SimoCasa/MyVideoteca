@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -95,6 +96,9 @@ class RegisterActivity : AppCompatActivity(){
         //mostro il dialogo di progresso
         loadingDialog.dismiss()
         loadingDialog = createLoadingDialog("Salvo le informazioni...")
+        Handler().postDelayed({
+            loadingDialog.dismiss()
+        }, 110) // Ritardo di 1 secondo prima di chiudere il dialogo
 
         //prendo il tempo corrente da inserire
         val timestamp = System.currentTimeMillis()

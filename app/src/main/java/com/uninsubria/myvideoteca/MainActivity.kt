@@ -5,27 +5,30 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity() {
     // Creazione var per DB Firebase
     private lateinit var auth: FirebaseAuth
-    // Creazione var per dialogo progresso
-    private lateinit var progressDialog : ProgressDialog
+    //Creazione dialogo progresso
+    private lateinit var progressBar: CircularProgressIndicator
+    private lateinit var loadingDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
 
         //Dialogo processo durante la registrazione in Firebase
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Attendere...")
-        progressDialog.setCanceledOnTouchOutside(false)
+        progressBar = CircularProgressIndicator(this)
         //...
 
         setContentView(R.layout.activity_login)
@@ -71,17 +74,18 @@ class MainActivity : AppCompatActivity() {
     private fun login(email: String, password: String){
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
+                // Mostro il progress durante il login
+                loadingDialog = createLoadingDialog("Accesso all'account...")
                 if (task.isSuccessful) { // Login riuscito
-
-                    // Mostro il progress durante il login
-                    progressDialog.setMessage("Accedo all'account...")
-                    progressDialog.show()
-
+                    Handler().postDelayed({
+                        loadingDialog.dismiss()
+                    }, 110) // Ritardo di 1 secondo prima di chiudere il dialogo
                     val openHome = Intent(this, HomePage::class.java)
                     // attivazione dell'activity di Login
                     startActivity(openHome)
-
+                    //loadingDialog.dismiss()
                 } else {
+                    loadingDialog.dismiss()
                     // Login fallito
                     Toast.makeText(this, "Login fallito. Verifica email e password", Toast.LENGTH_SHORT).show()
                 }
@@ -97,5 +101,15 @@ class MainActivity : AppCompatActivity() {
     private fun isValidEmail(email: String): Boolean {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(emailPattern.toRegex())
+    }
+
+    //Creo dialogo di caricamento/attesa
+    private fun createLoadingDialog(message: String): AlertDialog {
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setMessage(message)
+            .setCancelable(false)
+            .create()
+        dialog.show()
+        return dialog
     }
 }
