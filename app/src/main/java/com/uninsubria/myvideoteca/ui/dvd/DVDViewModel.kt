@@ -1,13 +1,13 @@
-package com.uninsubria.myvideoteca.ui.gallery
+package com.uninsubria.myvideoteca.ui.dvd
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GalleryViewModel : ViewModel() {
+class DVDViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Questo è un Fragment galleria"
+        value = "Inserisco dvd"
     }
     val text: LiveData<String> = _text
 }

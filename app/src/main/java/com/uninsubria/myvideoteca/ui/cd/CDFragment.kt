@@ -1,4 +1,4 @@
-package com.uninsubria.myvideoteca.ui.slideshow
+package com.uninsubria.myvideoteca.ui.cd
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.uninsubria.myvideoteca.databinding.FragmentSlideshowBinding
+import com.uninsubria.myvideoteca.databinding.FragmentCdBinding
 
-class SlideshowFragment : Fragment() {
+class CDFragment : Fragment() {
 
-    private var _binding: FragmentSlideshowBinding? = null
+    private var _binding: FragmentCdBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class SlideshowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        val CDViewModel =
+            ViewModelProvider(this).get(CDViewModel::class.java)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
+        _binding = FragmentCdBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
+        CDViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

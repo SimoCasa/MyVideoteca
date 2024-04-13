@@ -3,6 +3,7 @@ package com.uninsubria.myvideoteca
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -26,17 +27,11 @@ class HomePage : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         //Prendo istanza
         auth = FirebaseAuth.getInstance()
 
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
-
-        binding.appBarMain.fab.setOnClickListener {
-
-            //Faccio qualche funzione
-        }
 
         //Verifico quale sia l'utente corrente
         val firebaseUser = auth.currentUser!!
@@ -55,16 +50,17 @@ class HomePage : AppCompatActivity(){
                         binding.navView.getHeaderView(0).findViewById<TextView>(R.id.userDescTextView).apply {
                             text = name.toString() //MODIFICA
                         }
-                    }
-                    else if (rule == "user"){
+                        binding.navView.getHeaderView(0).findViewById<TextView>(R.id.textViewAdmin).setText("\uD83C\uDF1FADMIN\uD83C\uDF1F")
+                    }else if (rule == "user"){
+                        binding.appBarMain.fab.visibility= View.GONE
                         // Modifica del valore della TextView (Nome + Cognome)
                         binding.navView.getHeaderView(0).findViewById<TextView>(R.id.userDescTextView).apply {
-                            text = "$name $surname" //MODIFICA
+                            text = "$name $surname" //Imposta nome e cognome nella sidebar
                         }
                     }
                     // Modifica del valore della TextView (Email)
                     binding.navView.getHeaderView(0).findViewById<TextView>(R.id.emailTextView).apply {
-                        text = email.toString() // MODIFICA
+                        text = email.toString() // Imposta nome e cognome nella sidebar
                     }
                 }
 
@@ -72,7 +68,6 @@ class HomePage : AppCompatActivity(){
                     //errore accesso DB Firebase
                 }
             })
-        //...
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -81,12 +76,19 @@ class HomePage : AppCompatActivity(){
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_blueray, R.id.nav_dvd, R.id.nav_cd
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //Bottone icona matita premuto
+        val onClickListener = binding.appBarMain.fab.setOnClickListener {
+            navController.navigate(R.id.adminOptionsFragment)
+            binding.appBarMain.fab.visibility= View.GONE
+        }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

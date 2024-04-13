@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
+    implementation("com.google.android.material:material:1.11.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

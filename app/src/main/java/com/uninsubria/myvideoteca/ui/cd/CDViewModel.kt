@@ -1,13 +1,13 @@
-package com.uninsubria.myvideoteca.ui.slideshow
+package com.uninsubria.myvideoteca.ui.cd
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SlideshowViewModel : ViewModel() {
+class CDViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Questo è un Fragment slideshow"
+        value = "Inserisco cd"
     }
     val text: LiveData<String> = _text
 }

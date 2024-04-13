@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyRoundedButton" parent="Widget.Material3.Button.TextButton">
+        <item name="cornerSize">50dp</item> <!-- Imposta la dimensione dell'arrotondamento dei bordi -->
+        <item name="android:backgroundTint">@color/my_secondary</item> <!-- Imposta il colore di sfondo -->
+    </style>
+
+    <style name="RoundedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+    </style>
+
+
+</resources>

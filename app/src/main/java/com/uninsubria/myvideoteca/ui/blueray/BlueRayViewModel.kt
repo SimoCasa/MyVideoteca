@@ -1,13 +1,13 @@
-package com.uninsubria.myvideoteca.ui.home
+package com.uninsubria.myvideoteca.ui.blueray
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HomeViewModel : ViewModel() {
+class BlueRayViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Questo è un Fragment home"
+        value = "Inserisco blueray"
     }
     val text: LiveData<String> = _text
 }

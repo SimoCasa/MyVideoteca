@@ -11,7 +11,8 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/my_primary</item>
-        <!-- Customize your theme here. -->
+        <!-- Text Color -->
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Theme.MyVideoteca.NoActionBar">
