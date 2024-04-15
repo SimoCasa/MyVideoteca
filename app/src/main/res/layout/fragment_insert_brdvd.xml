@@ -256,6 +256,35 @@
                     android:padding="8dp"
                     android:scrollbars="vertical" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Locandina-->
+            <TextView
+                android:id="@+id/textViewLocandina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:alpha="0.7"
+                android:text="Locandina (Url)"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutLocandina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:boxBackgroundColor="@android:color/white"
+                style="@style/RoundedTextInputLayout"
+                app:boxStrokeColor="@color/my_secondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextLocandina"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/my_secondary"
+                    android:hint="Inserisci url locandina" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Bottone Inserisci -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAdd"

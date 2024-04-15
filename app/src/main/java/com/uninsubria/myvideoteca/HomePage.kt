@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -48,6 +50,14 @@ class HomePage : AppCompatActivity(){
                     val surname = snapshot.child("surname").value
                     val email = snapshot.child("email").value
                     val rule = snapshot.child("rule").value
+                    val imgUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" //Posso prenderla dal DB e se non c'è oppure non è valida carico quella base
+                    val imageView: ImageView = findViewById(R.id.imageView)
+                    //Imposto icona profilo
+                    Glide.with(this@HomePage)
+                        .load(imgUrl)
+                        .error(R.drawable.icon_user)    //Se errata mostra quella base
+                        .into(imageView)
+
                     if (rule == "admin"){
                         // Modifica del valore della TextView (Nome)
                         binding.navView.getHeaderView(0).findViewById<TextView>(R.id.userDescTextView).apply {
@@ -135,7 +145,7 @@ class HomePage : AppCompatActivity(){
             super.onBackPressed()
         } else {
             // Se è la prima volta che l'utente preme il pulsante indietro, mostra un messaggio di conferma
-            Toast.makeText(this, "Premi nuovamente per uscire", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Premi nuovamente per tornare indietro", Toast.LENGTH_SHORT).show()
             // Imposta il flag a true
             backPressedOnce = true
             // Avvia un timer per reimpostare il flag dopo un certo periodo di tempo (ad esempio, 2 secondi)
