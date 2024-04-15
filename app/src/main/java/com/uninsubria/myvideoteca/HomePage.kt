@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -20,10 +21,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.databinding.ActivityMainBinding
 
+@Suppress("DEPRECATION")
 class HomePage : AppCompatActivity(){
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    private var backPressedOnce = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -81,11 +84,33 @@ class HomePage : AppCompatActivity(){
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
+        //Rimuove e rimette la 'matita' in base a dove ci troviamo
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.adminOptionsFragment) {
+                binding.appBarMain.fab.visibility = View.GONE
+            }else if(destination.id == R.id.insertBRDVDFragment){
+                binding.appBarMain.fab.visibility = View.GONE
+            }else if(destination.id == R.id.insertCDFragment){
+                binding.appBarMain.fab.visibility = View.GONE
+            }else if(destination.id == R.id.editFragment){
+                binding.appBarMain.fab.visibility = View.GONE
+            }else if(destination.id == R.id.removeFragment){
+                binding.appBarMain.fab.visibility = View.GONE
+            }else{
+                binding.appBarMain.fab.visibility = View.VISIBLE
+            }
+        }
+        /*
+            else if(destination.id == R.id.editItem){
+                binding.appBarMain.fab.visibility = View.GONE
+            }else if(destination.id == R.id.removeItem){
+                    binding.appBarMain.fab.visibility = View.GONE
+            }
+        */
         //Bottone icona matita premuto
         val onClickListener = binding.appBarMain.fab.setOnClickListener {
             navController.navigate(R.id.adminOptionsFragment)
-            binding.appBarMain.fab.visibility= View.GONE
+            //binding.appBarMain.fab.visibility= View.GONE
         }
     }
 
@@ -99,6 +124,26 @@ class HomePage : AppCompatActivity(){
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    @SuppressLint("MissingSuperCall")
+    //DA SISTEMARE SE PREMO DUE VOLTE ESCO ANCHE NEI FRAGMENT
+    override fun onBackPressed() {
+        // Se non ci sono fragment nello stack, esegui la logica personalizzata per il pulsante indietro
+        if (backPressedOnce) {
+            // Se l'utente ha già premuto il pulsante indietro una volta, esegui l'operazione di default (tornare indietro)
+            super.onBackPressed()
+        } else {
+            // Se è la prima volta che l'utente preme il pulsante indietro, mostra un messaggio di conferma
+            Toast.makeText(this, "Premi nuovamente per uscire", Toast.LENGTH_SHORT).show()
+            // Imposta il flag a true
+            backPressedOnce = true
+            // Avvia un timer per reimpostare il flag dopo un certo periodo di tempo (ad esempio, 2 secondi)
+            // In questo modo, se l'utente preme nuovamente il pulsante indietro entro questo tempo, verrà eseguita l'operazione di default
+            // Se l'utente non preme nuovamente il pulsante indietro entro questo tempo, il flag viene reimpostato e il comportamento di default viene bloccato
+            // Puoi personalizzare la durata del timer in base alle tue esigenze
+            window.decorView.postDelayed({ backPressedOnce = false }, 2000)
+        }
     }
 
 }

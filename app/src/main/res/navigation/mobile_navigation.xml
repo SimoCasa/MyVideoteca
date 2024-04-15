@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/insertBRDVDFragment"
-        android:windowSoftInputMode="adjustResize"
+        android:windowSoftInputMode="adjustNothing"
         android:name="com.uninsubria.myvideoteca.ui.admin.InsertBRDVDFragment"
         android:label="@string/insertbrdvd"
         tools:layout="@layout/fragment_insert_brdvd" />
@@ -42,4 +42,18 @@
         android:name="com.uninsubria.myvideoteca.ui.admin.InsertCDFragment"
         android:label="@string/insertcd"
         tools:layout="@layout/fragment_insert_cd" />
+
+    <fragment
+        android:id="@+id/editFragment"
+        android:windowSoftInputMode="adjustResize"
+        android:name="com.uninsubria.myvideoteca.ui.admin.EditFragment"
+        android:label="@string/editItem"
+        tools:layout="@layout/fragment_edit" />
+
+    <fragment
+        android:id="@+id/removeFragment"
+        android:windowSoftInputMode="adjustResize"
+        android:name="com.uninsubria.myvideoteca.ui.admin.RemoveFragment"
+        android:label="@string/removeItem"
+        tools:layout="@layout/fragment_remove" />
 </navigation>

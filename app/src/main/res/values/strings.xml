@@ -13,4 +13,6 @@
     <string name="menu_admin">Admin Menu</string>
     <string name="insertbrdvd">Inserisci i dati</string>
     <string name="insertcd">Inserisci CD\n</string>
+    <string name="editItem">Modifica Elementi</string>
+    <string name="removeItem">Rimuovi Elemento</string>
 </resources>

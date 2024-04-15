@@ -47,14 +47,15 @@ class AdminOptionsFragment : Fragment() {
             navController.navigate(R.id.insertCDFragment)
         }
 
+        //Bottone Aggiungi
         val btnEditArticle = view.findViewById<Button>(R.id.btn_edit_article)
         btnEditArticle.setOnClickListener {
-            // Gestisci il clic sul pulsante "Modifica Articolo"
+            navController.navigate(R.id.editFragment)
         }
 
         val btnRemoveArticle = view.findViewById<Button>(R.id.btn_remove_article)
         btnRemoveArticle.setOnClickListener {
-            // Gestisci il clic sul pulsante "Rimuovi Articolo"
+            navController.navigate(R.id.removeFragment)
         }
     }
 

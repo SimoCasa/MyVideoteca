@@ -1,5 +1,6 @@
 package com.uninsubria.myvideoteca.ui.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -10,10 +11,15 @@ import com.uninsubria.myvideoteca.R
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.database.FirebaseDatabase
+import com.uninsubria.myvideoteca.HomePage
+import com.uninsubria.myvideoteca.MainActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,7 +46,6 @@ class InsertBRDVDFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,7 +105,7 @@ class InsertBRDVDFragment : Fragment() {
             // Termino il progress durante l'inserimento
             Handler().postDelayed({
                 loadingDialog.dismiss()
-            }, 1000) // Ritardo di 1 secondo prima di chiudere il dialogo
+            }, 100) // Ritardo di 1 secondo prima di chiudere il dialogo
 
         }
 
@@ -168,18 +173,22 @@ class InsertBRDVDFragment : Fragment() {
             filmRef.setValue(filmData)
                 .addOnSuccessListener {
                     // Inserimento riuscito
-                    // Puoi gestire qui eventuali azioni da eseguire dopo l'inserimento
-                    // Ad esempio, mostrare un messaggio di successo all'utente
+                    //Snackbar.make(requireView(), "Articolo inserito con successo", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Articolo inserito con successo", Toast.LENGTH_SHORT).show()
+                    val intentHome = Intent(requireActivity(), HomePage::class.java)
+                    startActivity(intentHome)
                 }
                 .addOnFailureListener { exception ->
                     // Inserimento fallito
                     // Gestisci qui eventuali errori o eccezioni
-                    println("Errore durante l'inserimento del film")
+                    //Snackbar.make(requireView(), "Errore nell'inserimento", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Errore nell'inserimento", Toast.LENGTH_SHORT).show()
                 }
         }
         else {
             // L'utente non è autenticato
             println("Errore in fase di login")
+
         }
 
     }
