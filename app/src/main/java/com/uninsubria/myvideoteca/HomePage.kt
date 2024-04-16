@@ -32,6 +32,7 @@ class HomePage : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         //Prendo istanza
         auth = FirebaseAuth.getInstance()
 
@@ -96,16 +97,12 @@ class HomePage : AppCompatActivity(){
         navView.setupWithNavController(navController)
         //Rimuove e rimette la 'matita' in base a dove ci troviamo
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.adminOptionsFragment) {
-                binding.appBarMain.fab.visibility = View.GONE
-            }else if(destination.id == R.id.insertBRDVDFragment){
-                binding.appBarMain.fab.visibility = View.GONE
-            }else if(destination.id == R.id.insertCDFragment){
-                binding.appBarMain.fab.visibility = View.GONE
-            }else if(destination.id == R.id.editFragment){
-                binding.appBarMain.fab.visibility = View.GONE
-            }else if(destination.id == R.id.removeFragment){
-                binding.appBarMain.fab.visibility = View.GONE
+            if (destination.id == R.id.adminOptionsFragment ||
+                destination.id == R.id.insertBRDVDFragment ||
+                destination.id == R.id.insertCDFragment ||
+                destination.id == R.id.editFragment ||
+                destination.id == R.id.removeFragment) {
+                    binding.appBarMain.fab.visibility = View.GONE
             }else{
                 binding.appBarMain.fab.visibility = View.VISIBLE
             }

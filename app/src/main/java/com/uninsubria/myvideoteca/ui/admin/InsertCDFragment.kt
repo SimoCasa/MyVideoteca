@@ -1,10 +1,13 @@
 package com.uninsubria.myvideoteca.ui.admin
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.uninsubria.myvideoteca.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,5 +59,43 @@ class InsertCDFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    //Funzione per validare tutti i dati
+    private fun validateFields(
+        titleField: EditText,
+        registaField: EditText,
+        tramaField: EditText,
+        hoursField: EditText,
+        minutesField: EditText,
+        secondsField: EditText,
+        locandinaField : EditText,
+        callback: (Boolean) -> Unit
+    ) {
+        var isValid = true
+
+        if (titleField.text.isBlank() || registaField.text.isBlank() || tramaField.text.isBlank() || hoursField.text.isBlank() || minutesField.text.isBlank() || secondsField.text.isBlank()) {
+            isValid = false
+            // Imposta il backgroundTintList di rosso per i campi vuoti
+            if (titleField.text.isBlank()) titleField.backgroundTintList = ColorStateList.valueOf(
+                Color.RED)
+            if (registaField.text.isBlank()) registaField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (tramaField.text.isBlank()) tramaField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            //Controlli su ore minuti e secondi
+            if (hoursField.text.isBlank() || hoursField.text.toString().toIntOrNull()==null) hoursField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (minutesField.text.isBlank() || minutesField.text.toString().toInt()>59 || minutesField.text.toString().toIntOrNull()==null) minutesField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (secondsField.text.isBlank() || secondsField.text.toString().toInt()>59 || secondsField.text.toString().toIntOrNull()==null) secondsField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            //La locandiina è facoltativa
+        } else {
+            // Imposta il backgroundTintList di verde per i campi compilati correttamente
+            titleField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            registaField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            tramaField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            hoursField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            minutesField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            secondsField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+        }
+
+        callback(isValid)
     }
 }

@@ -1,6 +1,8 @@
 package com.uninsubria.myvideoteca.ui.admin
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -64,6 +66,7 @@ class InsertBRDVDFragment : Fragment() {
         val editTextHours = view.findViewById<EditText>(R.id.editTextHours)
         val editTextMinutes = view.findViewById<EditText>(R.id.editTextMinutes)
         val editTextSeconds = view.findViewById<EditText>(R.id.editTextSeconds)
+        val editTextLocandina = view.findViewById<EditText>(R.id.editTextLocandina)
         val btnAdd = view.findViewById<Button>(R.id.btnAdd)
 
         // Click listener per il bottone btnAdd
@@ -75,32 +78,40 @@ class InsertBRDVDFragment : Fragment() {
                 else -> ""
             }
 
-            // Recupera i valori inseriti dall'utente
-            val title = editTextTitle.text.toString()
-            val regista = editTextRegista.text.toString()
-            val trama = editTextTrama.text.toString()
-            val hours = editTextHours.text.toString().toIntOrNull() ?: 0
-            val minutes = editTextMinutes.text.toString().toIntOrNull() ?: 0
-            val seconds = editTextSeconds.text.toString().toIntOrNull() ?: 0
-            val durata = "$hours:$minutes:$seconds"
-
             // Esegui le operazioni desiderate con i valori recuperati
             // Ad esempio, puoi passare i valori ad un'altra funzione per aggiungerli al database
             // o puoi eseguire altre operazioni di business logic qui
+            validateFields(
+                editTextTitle,
+                editTextRegista,
+                editTextTrama,
+                editTextHours,
+                editTextMinutes,
+                editTextSeconds,
+                editTextLocandina
+            ) { isValid ->
+                if (isValid) {  // Recupera i valori inseriti dall'utente
+                    val title = editTextTitle.text.toString()
+                    val regista = editTextRegista.text.toString()
+                    val trama = editTextTrama.text.toString()
+                    val hours = editTextHours.text.toString().toIntOrNull() ?: 0
+                    val minutes = editTextMinutes.text.toString().toIntOrNull() ?: 0
+                    val seconds = editTextSeconds.text.toString().toIntOrNull() ?: 0
+                    val durata = "$hours:$minutes:$seconds"
+                    val locandina = editTextLocandina.text.toString()
+                    //Inserisci i film nel database
+                    inserisciFilm(mediaType, title, regista, trama, durata,locandina)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Si prega di compilare tutti i campi",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
 
             // Mostro il progress durante l'inserimento
             loadingDialog = createLoadingDialog("Inserisco i dati...")
-
-            // Esempio: stampo i valori recuperati su console
-            /*println("Media Type: $mediaType")
-            println("Title: $title")
-            println("Regista: $regista")
-            println("Trama: $trama")
-            println("Durata: $hours:$minutes:$seconds")
-            */
-
-            // Inserisci il film nel database
-            inserisciFilm(mediaType, title, regista, trama, durata)
 
             // Termino il progress durante l'inserimento
             Handler().postDelayed({
@@ -139,7 +150,7 @@ class InsertBRDVDFragment : Fragment() {
             .create()
             .apply { show() }
     }
-    private fun inserisciFilm(mediaType: String, title: String, regista: String, trama: String, durata: String) {
+    private fun inserisciFilm(mediaType: String, title: String, regista: String, trama: String, durata: String, locandina:String) {
         // Ottieni l'UID dell'utente corrente
         val currentUserUID = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -188,8 +199,43 @@ class InsertBRDVDFragment : Fragment() {
         else {
             // L'utente non è autenticato
             println("Errore in fase di login")
+        }
+    }
 
+    //Funzione per validare tutti i dati
+    private fun validateFields(
+    titleField: EditText,
+    registaField: EditText,
+    tramaField: EditText,
+    hoursField: EditText,
+    minutesField: EditText,
+    secondsField: EditText,
+    locandinaField : EditText,
+    callback: (Boolean) -> Unit
+    ) {
+        var isValid = true
+
+        if (titleField.text.isBlank() || registaField.text.isBlank() || tramaField.text.isBlank() || hoursField.text.isBlank() || minutesField.text.isBlank() || secondsField.text.isBlank()) {
+            isValid = false
+            // Imposta il backgroundTintList di rosso per i campi vuoti
+            if (titleField.text.isBlank()) titleField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (registaField.text.isBlank()) registaField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (tramaField.text.isBlank()) tramaField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            //Controlli su ore minuti e secondi
+            if (hoursField.text.isBlank() || hoursField.text.toString().toIntOrNull()==null) hoursField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (minutesField.text.isBlank() || minutesField.text.toString().toInt()>59 || minutesField.text.toString().toIntOrNull()==null) minutesField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (secondsField.text.isBlank() || secondsField.text.toString().toInt()>59 || secondsField.text.toString().toIntOrNull()==null) secondsField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            //La locandiina è facoltativa
+        } else {
+            // Imposta il backgroundTintList di verde per i campi compilati correttamente
+            titleField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            registaField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            tramaField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            hoursField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            minutesField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            secondsField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
         }
 
+        callback(isValid)
     }
 }

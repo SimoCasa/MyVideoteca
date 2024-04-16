@@ -40,6 +40,7 @@ class RegisterActivity : AppCompatActivity(){
         val surname = findViewById<EditText>(R.id.surnameField) as EditText
         val emailRegister = findViewById<EditText>(R.id.emailField) as EditText
         val passwordRegister = findViewById<EditText>(R.id.passwordField) as EditText
+        val imgProfile = findViewById<EditText>(R.id.imgField) as EditText
         val regButton = findViewById<Button>(R.id.registerButton) as Button
 
         //Controllo sulla mail
@@ -58,21 +59,23 @@ class RegisterActivity : AppCompatActivity(){
 
         //Pressione sul bottone registrati
         regButton.setOnClickListener{
-            val name = name.text.toString()
-            val surname = surname.text.toString()
-            val email = emailRegister.text.toString()
-            val password = passwordRegister.text.toString()
+            regButton.setOnClickListener{
+                if (validateFields(name,surname,emailRegister,passwordRegister)) {
+                    val nameText = name.text.toString()
+                    val surnameText = surname.text.toString()
+                    val emailText = emailRegister.text.toString()
+                    val passwordText = passwordRegister.text.toString()
+                    val imgText = imgProfile.text.toString()
 
-            if(formatChecks(name,surname,email,password)){
-                register(name,surname,email,password) //esegue la registrazione
-            }else{
-                Toast.makeText(applicationContext, "I dati inseriti non sono validi", Toast.LENGTH_SHORT).show()
+                    // Tutti i campi sono stati compilati correttamente, procedi con la registrazione
+                    register(nameText, surnameText, emailText, passwordText, imgText)
+                }
             }
         }
     }
 
     //AGGIUNGO TUTTE LE VARIABILI AL DB, SE NON SI CONNETTE O ALTRO NON DEVO ANDARE AVANTI ALLA HOME
-    private fun register(name: String, surname: String, emailRegister: String, passwordRegister: String) {
+    private fun register(name: String, surname: String, emailRegister: String, passwordRegister: String, imgProfile: String) {
 
         // Mostra il dialogo di caricamento
         loadingDialog = createLoadingDialog("Creo l'account...")
@@ -128,7 +131,6 @@ class RegisterActivity : AppCompatActivity(){
             .addOnFailureListener{
                 loadingDialog.dismiss()
                 Toast.makeText(applicationContext, "Utente non creato", Toast.LENGTH_SHORT).show()
-
             }
     }
 
@@ -150,5 +152,43 @@ class RegisterActivity : AppCompatActivity(){
             .create()
         dialog.show()
         return dialog
+    }
+
+    private fun validateFields(name: EditText, surname: EditText, emailRegister: EditText, passwordRegister: EditText): Boolean {
+        val nameText = name.text.toString()
+        val surnameText = surname.text.toString()
+        val emailText = emailRegister.text.toString()
+        val passwordText = passwordRegister.text.toString()
+
+        if (nameText.isBlank() || surnameText.isBlank() || emailText.isBlank() || passwordText.isBlank() || !isValidEmail(emailText)) {
+            // Se uno dei campi è vuoto o l'email non è valida, mostra un messaggio di errore e imposta il background su rosso per i campi vuoti o l'email non valida
+            Toast.makeText(applicationContext, "Si prega di compilare tutti i campi correttamente", Toast.LENGTH_SHORT).show()
+            if (nameText.isBlank()) {
+                name.error = "Campo obbligatorio"
+                name.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else {
+                name.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            }
+            if (surnameText.isBlank()) {
+                surname.error = "Campo obbligatorio"
+                surname.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else {
+                surname.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            }
+            if (emailText.isBlank() || !isValidEmail(emailText)) {
+                emailRegister.error = if (emailText.isBlank()) "Campo obbligatorio" else "Indirizzo email non valido"
+                emailRegister.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else {
+                emailRegister.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            }
+            if (passwordText.isBlank()) {
+                passwordRegister.error = "Campo obbligatorio"
+                passwordRegister.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            } else {
+                passwordRegister.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            }
+            return false
+        }
+        return true
     }
 }
