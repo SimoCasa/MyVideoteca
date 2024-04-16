@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:alpha="0.7"
-                    android:text="Autori"
+                    android:text="Casa Discografica"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 

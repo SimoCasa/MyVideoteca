@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.databinding.ActivityMainBinding
+import androidx.appcompat.widget.SearchView
 
 @Suppress("DEPRECATION")
 class HomePage : AppCompatActivity(){
@@ -51,7 +52,7 @@ class HomePage : AppCompatActivity(){
                     val surname = snapshot.child("surname").value
                     val email = snapshot.child("email").value
                     val rule = snapshot.child("rule").value
-                    val imgUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" //Posso prenderla dal DB e se non c'è oppure non è valida carico quella base
+                    val imgUrl = snapshot.child("imgurl").value 
                     val imageView: ImageView = findViewById(R.id.imageView)
                     //Imposto icona profilo
                     Glide.with(this@HomePage)
@@ -97,23 +98,38 @@ class HomePage : AppCompatActivity(){
         navView.setupWithNavController(navController)
         //Rimuove e rimette la 'matita' in base a dove ci troviamo
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.adminOptionsFragment ||
-                destination.id == R.id.insertBRDVDFragment ||
-                destination.id == R.id.insertCDFragment ||
-                destination.id == R.id.editFragment ||
-                destination.id == R.id.removeFragment) {
-                    binding.appBarMain.fab.visibility = View.GONE
-            }else{
-                binding.appBarMain.fab.visibility = View.VISIBLE
-            }
+            ref.child(firebaseUser.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    //Sopprimo per aggregare Nome e Cognome nella TextView.
+                    @SuppressLint("SetTextI18n")
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val rule = snapshot.child("rule").value
+                        if (rule == "admin"){
+                            if (destination.id == R.id.adminOptionsFragment ||
+                                destination.id == R.id.insertBRDVDFragment ||
+                                destination.id == R.id.insertCDFragment ||
+                                destination.id == R.id.editFragment ||
+                                destination.id == R.id.insertCDFragment ||
+                                destination.id == R.id.removeFragment) {
+                                binding.appBarMain.fab.visibility = View.GONE
+                            } else {
+                                binding.appBarMain.fab.visibility = View.VISIBLE
+                            }
+                        }else if (rule == "user"){
+                            if (destination.id == R.id.nav_cd ||
+                                destination.id == R.id.nav_blueray ||
+                                destination.id == R.id.nav_dvd) {
+                                binding.appBarMain.fab.visibility = View.GONE
+                            } else {
+                                binding.appBarMain.fab.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        //errore accesso DB Firebase
+                    }
+                })
         }
-        /*
-            else if(destination.id == R.id.editItem){
-                binding.appBarMain.fab.visibility = View.GONE
-            }else if(destination.id == R.id.removeItem){
-                    binding.appBarMain.fab.visibility = View.GONE
-            }
-        */
         //Bottone icona matita premuto
         val onClickListener = binding.appBarMain.fab.setOnClickListener {
             navController.navigate(R.id.adminOptionsFragment)
@@ -122,11 +138,7 @@ class HomePage : AppCompatActivity(){
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -152,5 +164,27 @@ class HomePage : AppCompatActivity(){
             window.decorView.postDelayed({ backPressedOnce = false }, 2000)
         }
     }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        // Trova l'elemento di ricerca nel menu
+        val searchItem = menu.findItem(R.id.app_bar_search)
 
+        // Ottieni il SearchView dall'actionView dell'elemento di ricerca
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnSearchClickListener {
+            // Quando la barra di ricerca viene aperta, rendi invisibile l'elemento delle impostazioni
+            val settingsMenuItem = menu.findItem(R.id.action_settings)
+            settingsMenuItem.isVisible = false
+        }
+
+        searchView.setOnCloseListener {
+            // Quando la barra di ricerca viene chiusa, rendi visibile l'elemento delle impostazioni
+            val settingsMenuItem = menu.findItem(R.id.action_settings)
+            settingsMenuItem.isVisible = true
+            false
+        }
+
+        return true
+    }
 }

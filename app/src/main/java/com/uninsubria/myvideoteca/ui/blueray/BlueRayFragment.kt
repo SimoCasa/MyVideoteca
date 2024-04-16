@@ -33,6 +33,7 @@ class BlueRayFragment : Fragment() {
             textView.text = it
         }
         return root
+
     }
 
     override fun onDestroyView() {

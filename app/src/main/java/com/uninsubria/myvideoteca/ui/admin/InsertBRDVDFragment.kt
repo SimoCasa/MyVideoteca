@@ -78,9 +78,7 @@ class InsertBRDVDFragment : Fragment() {
                 else -> ""
             }
 
-            // Esegui le operazioni desiderate con i valori recuperati
-            // Ad esempio, puoi passare i valori ad un'altra funzione per aggiungerli al database
-            // o puoi eseguire altre operazioni di business logic qui
+            //Controllo che i dati inseriti siano validi
             validateFields(
                 editTextTitle,
                 editTextRegista,
@@ -116,7 +114,7 @@ class InsertBRDVDFragment : Fragment() {
             // Termino il progress durante l'inserimento
             Handler().postDelayed({
                 loadingDialog.dismiss()
-            }, 100) // Ritardo di 1 secondo prima di chiudere il dialogo
+            }, 100) // Ritardo di 0.1 secondo prima di chiudere il dialogo
 
         }
 
@@ -143,6 +141,7 @@ class InsertBRDVDFragment : Fragment() {
                 }
             }
     }
+    //Creo messaggio di dialogo
     private fun createLoadingDialog(message: String): AlertDialog {
         return MaterialAlertDialogBuilder(requireContext())
             .setMessage(message)
@@ -150,6 +149,7 @@ class InsertBRDVDFragment : Fragment() {
             .create()
             .apply { show() }
     }
+    //Inserisco Film nel DB di Firebase
     private fun inserisciFilm(mediaType: String, title: String, regista: String, trama: String, durata: String, locandina:String) {
         // Ottieni l'UID dell'utente corrente
         val currentUserUID = FirebaseAuth.getInstance().currentUser?.uid
@@ -177,22 +177,20 @@ class InsertBRDVDFragment : Fragment() {
                 "regista" to regista,
                 "trama" to trama,
                 "durata" to durata,
-                "uid" to currentUserUID
+                "uid" to currentUserUID,
+                "locandina" to locandina
             )
 
             // Inserisci i dati nel database
             filmRef.setValue(filmData)
                 .addOnSuccessListener {
                     // Inserimento riuscito
-                    //Snackbar.make(requireView(), "Articolo inserito con successo", Snackbar.LENGTH_SHORT).show()
                     Toast.makeText(requireContext(), "Articolo inserito con successo", Toast.LENGTH_SHORT).show()
                     val intentHome = Intent(requireActivity(), HomePage::class.java)
                     startActivity(intentHome)
                 }
                 .addOnFailureListener { exception ->
                     // Inserimento fallito
-                    // Gestisci qui eventuali errori o eccezioni
-                    //Snackbar.make(requireView(), "Errore nell'inserimento", Snackbar.LENGTH_SHORT).show()
                     Toast.makeText(requireContext(), "Errore nell'inserimento", Toast.LENGTH_SHORT).show()
                 }
         }
