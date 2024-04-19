@@ -3,6 +3,7 @@ package com.uninsubria.myvideoteca.ui.admin
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -213,25 +215,62 @@ class InsertBRDVDFragment : Fragment() {
     ) {
         var isValid = true
 
-        if (titleField.text.isBlank() || registaField.text.isBlank() || tramaField.text.isBlank() || hoursField.text.isBlank() || minutesField.text.isBlank() || secondsField.text.isBlank()) {
+        if (titleField.text.isBlank() || registaField.text.isBlank() || tramaField.text.isBlank() || hoursField.text.isBlank() || minutesField.text.isBlank() || secondsField.text.isBlank() || minutesField.text.toString().toInt()>59 || hoursField.text.toString().toInt()>59 || secondsField.text.toString().toInt()>59) {
             isValid = false
             // Imposta il backgroundTintList di rosso per i campi vuoti
-            if (titleField.text.isBlank()) titleField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (registaField.text.isBlank()) registaField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (tramaField.text.isBlank()) tramaField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (titleField.text.isBlank()){
+                titleField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo Obbligatorio"}
+            else{
+                titleField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null}
+
+            if (registaField.text.isBlank()) {
+                registaField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                registaField.error="Campo Obbligatorio"}
+            else{
+                registaField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                registaField.error=null
+            }
+
+            if (tramaField.text.isBlank()){
+                tramaField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                tramaField.error="Campo Obbligatorio"}
+            else{
+                tramaField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                tramaField.error=null
+            }
             //Controlli su ore minuti e secondi
-            if (hoursField.text.isBlank() || hoursField.text.toString().toIntOrNull()==null) hoursField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (minutesField.text.isBlank() || minutesField.text.toString().toInt()>59 || minutesField.text.toString().toIntOrNull()==null) minutesField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (secondsField.text.isBlank() || secondsField.text.toString().toInt()>59 || secondsField.text.toString().toIntOrNull()==null) secondsField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            //La locandiina è facoltativa
+            if (hoursField.text.isBlank() || hoursField.text.toString().toIntOrNull()==null){
+                hoursField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                hoursField.error="Campo Obbligatorio"}
+            else{
+                hoursField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                hoursField.error=null
+            }
+            if (minutesField.text.isBlank() || minutesField.text.toString().toInt()>59 || minutesField.text.toString().toIntOrNull()==null){
+                minutesField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                minutesField.error="Campo Obbligatorio"}
+            else{
+                minutesField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                minutesField.error=null
+            }
+            if (secondsField.text.isBlank() || secondsField.text.toString().toInt()>59 || secondsField.text.toString().toIntOrNull()==null){
+                secondsField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                secondsField.error="Campo Obbligatorio"}
+            else{
+                secondsField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                secondsField.error=null
+            }
+            //La locandina è facoltativa
         } else {
-            // Imposta il backgroundTintList di verde per i campi compilati correttamente
-            titleField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            registaField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            tramaField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            hoursField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            minutesField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            secondsField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            // Imposta il backgroundTintList di VERDE per i campi compilati correttamente
+            titleField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            registaField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            tramaField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            hoursField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            minutesField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            secondsField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
         }
 
         callback(isValid)

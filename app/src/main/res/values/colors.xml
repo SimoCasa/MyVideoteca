@@ -12,4 +12,6 @@
     <color name="my_secondary">#A2BBED</color>
     <color name="red">#FF1100</color>
 
+    <color name="card_bg_day">#A6FFFFFF</color>
+    <color name="card_bg_night">#AE000000</color>
 </resources>

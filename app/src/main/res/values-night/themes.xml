@@ -2,16 +2,22 @@
     <!-- Base application theme. -->
     <style name="Theme.MyVideoteca" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue_200</item>
-        <item name="colorPrimaryVariant">@color/blue_700</item>
+        <item name="colorPrimary">@color/my_primary</item>
+        <item name="colorPrimaryVariant">@color/my_primary</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/my_secondary</item>
         <item name="colorSecondaryVariant">@color/my_secondary</item>
         <item name="colorOnSecondary">@color/white</item>0
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/my_primary</item>
+
         <!-- Text color -->
         <item name="android:textColor">@color/white</item>
+
+        <!-- Card Color -->
+        <item name="cardBackgroundColor">@color/card_bg_night</item>
     </style>
 </resources>

@@ -27,11 +27,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:cardBackgroundColor="#BEFFFFFF"
+        app:background="?attr/cardBackgroundColor"
         app:cardCornerRadius="28dp"
+        android:alpha="0.8"
         android:layout_marginBottom="-20dp"
         android:id="@+id/card_view"
         >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,23 +84,13 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutTitle"
+            <EditText
+                android:id="@+id/editTextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:boxBackgroundColor="@android:color/white"
-                style="@style/RoundedTextInputLayout"
-                app:boxStrokeColor="@color/my_secondary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/my_secondary"
-                    android:hint="Inserisci il titolo" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Inserisci il titolo"
+                android:backgroundTint="@color/my_secondary"
+                app:boxStrokeColor="@color/my_secondary"/>
 
             <!--Regista-->
             <TextView
@@ -111,23 +103,12 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutAutori"
+            <EditText
+                android:id="@+id/editTextRegista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:boxBackgroundColor="@android:color/white"
-                style="@style/RoundedTextInputLayout"
-                app:boxStrokeColor="@color/my_secondary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextRegista"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/my_secondary"
-                    android:hint="Inserisci il nome del regista" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:backgroundTint="@color/my_secondary"
+                android:hint="Inserisci il nome del regista" />
 
             <!-- Layout per ore, minuti e secondi -->
             <TextView
@@ -148,25 +129,17 @@
                 android:orientation="horizontal">
 
                 <!-- Campo di testo per le ore -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutHours"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:boxBackgroundColor="@android:color/white"
+
+                <EditText
+                    android:id="@+id/editTextHours"
                     style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextHours"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Ore"
-                        android:maxLength="2"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="Ore"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    app:boxStrokeColor="@color/my_secondary" />
 
                 <!-- Punto separatore -->
                 <TextView
@@ -176,25 +149,16 @@
                     android:text=":" />
 
                 <!-- Campo di testo per i minuti -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutMinutes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:boxBackgroundColor="@android:color/white"
+                <EditText
+                    android:id="@+id/editTextMinutes"
                     style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextMinutes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Minuti"
-                        android:maxLength="2"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="Minuti"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    app:boxStrokeColor="@color/my_secondary" />
 
                 <!-- Punto separatore -->
                 <TextView
@@ -204,25 +168,16 @@
                     android:text=":" />
 
                 <!-- Campo di testo per i secondi -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutSeconds"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:boxBackgroundColor="@android:color/white"
+                <EditText
+                    android:id="@+id/editTextSeconds"
                     style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextSeconds"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Secondi"
-                        android:maxLength="2"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="0dp"
+                    android:layout_height="53dp"
+                    android:layout_weight="1"
+                    android:hint="Secondi"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    app:boxStrokeColor="@color/my_secondary" />
             </LinearLayout>
 
             <!-- Testo Trama -->
@@ -237,25 +192,17 @@
                 android:textStyle="bold" />
 
             <!-- Casella di testo per la Trama -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutTrama"
+            <EditText
+                android:id="@+id/editTextTrama"
                 style="@style/RoundedTextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:boxBackgroundColor="@android:color/white"
-                app:boxStrokeColor="@color/my_secondary"
-                app:hintTextColor="@color/my_secondary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTrama"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/my_secondary"
-                    android:inputType="textMultiLine"
-                    android:padding="8dp"
-                    android:scrollbars="vertical" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="60dp"
+                android:backgroundTint="@color/my_secondary"
+                android:hint="Inserisci la trama"
+                android:inputType="textMultiLine"
+                android:padding="8dp"
+                android:scrollbars="vertical"
+                app:boxStrokeColor="@color/my_secondary" />
 
             <!--Locandina-->
             <TextView
@@ -268,22 +215,16 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutLocandina"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:boxBackgroundColor="@android:color/white"
-                style="@style/RoundedTextInputLayout"
-                app:boxStrokeColor="@color/my_secondary">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextLocandina"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/my_secondary"
-                    android:hint="Inserisci url locandina" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/editTextLocandina"
+                style="@style/RoundedTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/my_secondary"
+                android:hint="Inserisci url locandina"
+                app:boxStrokeColor="@color/my_secondary" />
 
             <!-- Bottone Inserisci -->
             <com.google.android.material.button.MaterialButton
@@ -294,8 +235,8 @@
                 android:layout_marginTop="16dp"
                 android:text="Inserisci"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     </FrameLayout>

@@ -208,31 +208,81 @@ class InsertCDFragment : Fragment() {
     ) {
         var isValid = true
 
-        if (titleField.text.isBlank() || autoriField.text.isBlank() || hoursField.text.isBlank() || minutesField.text.isBlank() || secondsField.text.isBlank() || casadiscField.text.isBlank() || genereField.text.isBlank() || trackNField.text.isBlank()) {
+        if (titleField.text.isBlank() || autoriField.text.isBlank() || hoursField.text.isBlank() || minutesField.text.isBlank() || secondsField.text.isBlank() || casadiscField.text.isBlank() || genereField.text.isBlank() || trackNField.text.isBlank() || minutesField.text.toString().toInt()>59 || hoursField.text.toString().toInt()>59 || secondsField.text.toString().toInt()>59) {
             isValid = false
             // Imposta il backgroundTintList di rosso per i campi vuoti
-            if (titleField.text.isBlank()) titleField.backgroundTintList = ColorStateList.valueOf(
-                Color.RED)
-            if (autoriField.text.isBlank()) autoriField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (casadiscField.text.isBlank()) casadiscField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (genereField.text.isBlank()) genereField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (titleField.text.isBlank()){
+                titleField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                titleField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
+
+            if (autoriField.text.isBlank()) {
+                autoriField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                autoriField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
+
+            if (casadiscField.text.isBlank()) {
+                casadiscField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                casadiscField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
+            if (genereField.text.isBlank()){
+                genereField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                genereField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
+
             //Controlli su ore minuti e secondi
-            if (hoursField.text.isBlank() || hoursField.text.toString().toIntOrNull()==null) hoursField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (minutesField.text.isBlank() || minutesField.text.toString().toInt()>59 || minutesField.text.toString().toIntOrNull()==null) minutesField.backgroundTintList = ColorStateList.valueOf(Color.RED)
-            if (secondsField.text.isBlank() || secondsField.text.toString().toInt()>59 || secondsField.text.toString().toIntOrNull()==null) secondsField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (hoursField.text.isBlank() || hoursField.text.toString().toIntOrNull()==null) {
+                hoursField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                hoursField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
+            if (minutesField.text.isBlank() || minutesField.text.toString().toInt()>59 || minutesField.text.toString().toIntOrNull()==null) {
+                minutesField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                minutesField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
+            if (secondsField.text.isBlank() || secondsField.text.toString().toInt()>59 || secondsField.text.toString().toIntOrNull()==null) {
+                secondsField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                secondsField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
             //Controlli sul numero tracce
-            if (trackNField.text.isBlank() || trackNField.text.toString().toIntOrNull()==null) trackNField.backgroundTintList = ColorStateList.valueOf(Color.RED)
+            if (trackNField.text.isBlank() || trackNField.text.toString().toIntOrNull()==null) {
+                trackNField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D8E14949"))
+                titleField.error="Campo obbligatorio"
+            }else{
+                trackNField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+                titleField.error=null
+            }
             //La immagine è facoltativa
         } else {
             // Imposta il backgroundTintList di verde per i campi compilati correttamente
-            titleField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            autoriField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            hoursField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            minutesField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            secondsField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            casadiscField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            genereField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
-            trackNField.backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+            titleField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            autoriField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            hoursField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            minutesField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            secondsField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            casadiscField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            genereField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
+            trackNField.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#D883E149"))
         }
 
         callback(isValid)

@@ -3,16 +3,27 @@
     <style name="Theme.MyVideoteca" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/my_primary</item>
+        <!--Questa riga definisce una variante del colore primario, che potrebbe essere utilizzata per sfumature o sfumature del colore principale-->
         <item name="colorPrimaryVariant">@color/my_primary</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <!--Questa riga definisce il colore del testo o degli elementi visualizzati sopra il colore primario. In questo caso, il testo sarà bianco-->
+        <item name="colorOnPrimary">@color/black</item>
+
         <!-- Secondary brand color. -->
+        <!--Questa riga definisce il colore secondario dell'applicazione, probabilmente utilizzato per dettagli o elementi di design aggiuntivi.-->
         <item name="colorSecondary">@color/my_secondary</item>
+        <!--Questa riga definisce una variante del colore secondario, simile alla riga 7-->
         <item name="colorSecondaryVariant">@color/my_secondary</item>
+        <!--Questa riga definisce il colore del testo o degli elementi visualizzati sopra il colore secondario. In questo caso, il testo sarà nero-->
         <item name="colorOnSecondary">@color/black</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/my_primary</item>
+
         <!-- Text Color -->
         <item name="android:textColor">@color/black</item>
+
+        <!--Card Color-->
+        <item name="cardBackgroundColor">@color/card_bg_day</item>
     </style>
 
     <style name="Theme.MyVideoteca.NoActionBar">

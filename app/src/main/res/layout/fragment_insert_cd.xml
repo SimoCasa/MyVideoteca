@@ -27,8 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:cardBackgroundColor="#BEFFFFFF"
+            android:background="?attr/cardBackgroundColor"
             app:cardCornerRadius="28dp"
+            android:alpha="0.7"
             android:layout_marginBottom="-20dp"
             android:id="@+id/card_view"
             >
@@ -48,24 +49,14 @@
                     android:text="Disco"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutNomeDisco"
+                <EditText
+                    android:id="@+id/editTextNomeDisco"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@android:color/white"
-                    style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextNomeDisco"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Inserisci il nome del disco" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Inserisci il nome del disco"
+                    android:backgroundTint="@color/my_secondary"
+                    app:boxStrokeColor="@color/my_secondary"/>
 
                 <!--Autori-->
                 <TextView
@@ -73,28 +64,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:alpha="0.7"
+                    android:alpha="0.8"
                     android:text="Autori"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutAutori"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@android:color/white"
+                <EditText
+                    android:id="@+id/editTextAutori"
                     style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextAutori"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Inserisci il nome dell'autore/i" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/my_secondary"
+                    android:hint="Inserisci il nome dell'autore/i"
+                    app:boxStrokeColor="@color/my_secondary" />
 
                 <!-- Layout per ore, minuti e secondi -->
                 <TextView
@@ -115,26 +98,17 @@
                     android:orientation="horizontal">
 
                     <!-- Campo di testo per le ore -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutHours"
+                    <EditText
+                        android:id="@+id/editTextHours"
+                        style="@style/RoundedTextInputLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:boxBackgroundColor="@android:color/white"
-                        style="@style/RoundedTextInputLayout"
-                        app:boxStrokeColor="@color/my_secondary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextHours"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/my_secondary"
-                            android:hint="Ore"
-                            android:maxLength="2"
-                            android:inputType="number" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                        android:hint="Ore"
+                        android:backgroundTint="@color/my_secondary"
+                        app:boxStrokeColor="@color/my_secondary"
+                        android:maxLength="2"
+                        android:inputType="number"/>
                     <!-- Punto separatore -->
                     <TextView
                         android:id="@+id/textViewSeparator1"
@@ -143,26 +117,17 @@
                         android:text=":" />
 
                     <!-- Campo di testo per i minuti -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutMinutes"
+                    <EditText
+                        android:id="@+id/editTextMinutes"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:boxBackgroundColor="@android:color/white"
                         style="@style/RoundedTextInputLayout"
-                        app:boxStrokeColor="@color/my_secondary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextMinutes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/my_secondary"
-                            android:hint="Minuti"
-                            android:maxLength="2"
-                            android:inputType="number" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                        android:hint="Minuti"
+                        android:backgroundTint="@color/my_secondary"
+                        app:boxStrokeColor="@color/my_secondary"
+                        android:maxLength="2"
+                        android:inputType="number"/>
                     <!-- Punto separatore -->
                     <TextView
                         android:id="@+id/textViewSeparator2"
@@ -171,25 +136,17 @@
                         android:text=":" />
 
                     <!-- Campo di testo per i secondi -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutSeconds"
+                    <EditText
+                        android:id="@+id/editTextSeconds"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:boxBackgroundColor="@android:color/white"
+                        android:hint="Secondi"
                         style="@style/RoundedTextInputLayout"
-                        app:boxStrokeColor="@color/my_secondary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextSeconds"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/my_secondary"
-                            android:hint="Secondi"
-                            android:maxLength="2"
-                            android:inputType="number" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:backgroundTint="@color/my_secondary"
+                        app:boxStrokeColor="@color/my_secondary"
+                        android:maxLength="2"
+                        android:inputType="number"/>
                 </LinearLayout>
 
                 <!--Casa Discografica-->
@@ -203,22 +160,15 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutCasaDisco"
+                <EditText
+                    android:id="@+id/editTextCasaDisco"
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@android:color/white"
                     style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextCasaDisco"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Inserisci il nome della casa discografica" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Inserisci il nome della casa discografica"
+                    android:backgroundTint="@color/my_secondary"
+                    app:boxStrokeColor="@color/my_secondary"/>
 
                 <!--Genere-->
                 <TextView
@@ -230,22 +180,16 @@
                     android:text="Genere"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutGenere"
+
+                <EditText
+                    android:id="@+id/editTextGenere"
+                    style="@style/RoundedTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Inserisci il genere"
                     android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@android:color/white"
-                    style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextGenere"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Inserisci il genere" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:backgroundTint="@color/my_secondary"
+                    app:boxStrokeColor="@color/my_secondary"/>
 
                 <!--Numero Tracce-->
                 <TextView
@@ -258,23 +202,16 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutTrack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@android:color/white"
+                <EditText
+                    android:id="@+id/editTextTrack"
                     style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextTrack"
-                        android:layout_width="190dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Numero delle tracce"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="200dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Numero delle tracce"
+                    android:inputType="number"
+                    android:backgroundTint="@color/my_secondary"
+                    app:boxStrokeColor="@color/my_secondary"/>
 
                 <!--Immagine Disco-->
                 <TextView
@@ -286,23 +223,15 @@
                     android:text="Immagine Disco (Url)"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayoutImgDisk"
+                <EditText
+                    android:id="@+id/editTextImgDisk"
+                    android:layout_marginTop="8dp"
+                    style="@style/RoundedTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:boxBackgroundColor="@android:color/white"
-                    style="@style/RoundedTextInputLayout"
-                    app:boxStrokeColor="@color/my_secondary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextImgDisk"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/my_secondary"
-                        android:hint="Inserisci url immagine disco" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Inserisci url immagine disco"
+                    android:backgroundTint="@color/my_secondary"
+                    app:boxStrokeColor="@color/my_secondary"/>
 
                 <!-- Bottone Inserisci -->
                 <com.google.android.material.button.MaterialButton
