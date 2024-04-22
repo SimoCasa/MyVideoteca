@@ -24,10 +24,17 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".HomePage" />
+        <activity android:name=".HomePage"
+            android:windowSoftInputMode="adjustResize"/>
+
         <activity android:name=".RegisterActivity"
-            android:windowSoftInputMode="adjustResize"
-        />
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".DetailedBRDVD"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".DetailedCD"
+            android:windowSoftInputMode="adjustResize"/>
 
     </application>
 

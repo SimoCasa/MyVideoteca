@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -166,7 +165,7 @@ class InsertCDFragment : Fragment() {
             val cdData = mapOf(
                 "title" to title,
                 "autori" to autori,
-                "casa discografica" to casa_discografica,
+                "casa_discografica" to casa_discografica,
                 "genere" to genere,
                 "track" to track,
                 "durata" to durata,

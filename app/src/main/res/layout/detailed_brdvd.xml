@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/filmTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Nome Film"
+        android:textSize="24sp"
+        android:textColor="@color/my_secondary"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardImage"
+        android:layout_width="380dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/my_primary">
+
+        <!-- Immagine sfocata che copre i bordi laterali -->
+            <ImageView
+                android:id="@+id/filmBlurredImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/login_background"
+                android:alpha="0.2"
+                android:scaleType="centerCrop"/>
+
+        <!-- ImageView verticale al centro -->
+            <ImageView
+                android:id="@+id/filmImg"
+                android:layout_width="380dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/login_background"/>
+
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Regista:"
+        android:textColor="@color/my_secondary"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        app:cardElevation="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:textSize="16sp"
+            android:id="@+id/detailDirector"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Durata:"
+        android:textColor="@color/my_secondary"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        app:cardElevation="8dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="time"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:textSize="16sp"
+            android:id="@+id/detailDuration"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trama:"
+        android:textColor="@color/my_secondary"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        app:cardElevation="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tesst"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:textSize="16sp"
+            android:id="@+id/detailPlot"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Bottone Inserisci -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBook"
+        style="@style/MyRoundedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Prenota"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Imposto la scritta se disponibile o meno -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="disponibilità"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:textSize="12sp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/bookState"/>
+
+</LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
