@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,7 +34,7 @@ class CDFragment : Fragment() {
     ): View {
         _binding = FragmentCdBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        listView = binding.brListView
+        listView = binding.cdListView
         // Inizializza l'adapter
         adapter = CDAdapter(requireContext(), R.layout.fragment_cd, mutableListOf())
         // Imposta l'adapter sulla ListView
@@ -45,8 +46,9 @@ class CDFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val progressBar = binding.progressBar
         // Recupera i dati da Firebase e aggiorna l'adapter
-        retrieveDataFromFirebase()
+        retrieveDataFromFirebase(progressBar)
 
         listView.setOnItemClickListener { parent, view, position, id ->
             // Ottieni l'elemento selezionato dalla posizione
@@ -59,7 +61,7 @@ class CDFragment : Fragment() {
         }
     }
 
-    private fun retrieveDataFromFirebase() {
+    private fun retrieveDataFromFirebase(progressBar: ProgressBar) {
         // Esempio di recupero dati da Firebase e aggiornamento dell'adapter
         val databaseReference = FirebaseDatabase.getInstance().getReference("CD")
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -73,10 +75,15 @@ class CDFragment : Fragment() {
 
                 // Aggiorna l'adapter con i dati appena ottenuti
                 adapter.updateData(cdList)
+
+                // Nascondi la ProgressBar quando i dati sono stati caricati
+                progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e("CDFragment", "Failed to retrieve data from Firebase: ${databaseError.message}")
+                // Nascondi la ProgressBar anche in caso di errore
+                progressBar.visibility = View.GONE
             }
         })
     }

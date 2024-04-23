@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,9 +44,11 @@ class BlueRayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Barra di caricamento
+        val progressBar = binding.progressBar
 
         // Recupera i dati da Firebase e aggiorna l'adapter
-        retrieveDataFromFirebase()
+        retrieveDataFromFirebase(progressBar)
 
         listView.setOnItemClickListener { parent, view, position, id ->
             // Ottieni l'elemento selezionato dalla posizione
@@ -59,7 +62,7 @@ class BlueRayFragment : Fragment() {
         }
     }
 
-    private fun retrieveDataFromFirebase() {
+    private fun retrieveDataFromFirebase(progressBar: ProgressBar) {
         // Esempio di recupero dati da Firebase e aggiornamento dell'adapter
         val databaseReference = FirebaseDatabase.getInstance().getReference("Bluray")
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -73,10 +76,15 @@ class BlueRayFragment : Fragment() {
 
                 // Aggiorna l'adapter con i dati appena ottenuti
                 adapter.updateData(blueRayList)
+
+                // Nascondi la ProgressBar quando i dati sono stati caricati
+                progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e("BlueRayFragment", "Failed to retrieve data from Firebase: ${databaseError.message}")
+                // Nascondi la ProgressBar anche in caso di errore
+                progressBar.visibility = View.GONE
             }
         })
     }
