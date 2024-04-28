@@ -164,7 +164,7 @@ class HomePage : AppCompatActivity(){
             window.decorView.postDelayed({ backPressedOnce = false }, 2000)
         }
     }
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         // Trova l'elemento di ricerca nel menu
         val searchItem = menu.findItem(R.id.app_bar_search)
@@ -187,4 +187,5 @@ class HomePage : AppCompatActivity(){
 
         return true
     }
+     */
 }

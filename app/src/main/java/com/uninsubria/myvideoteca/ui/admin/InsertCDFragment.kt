@@ -80,7 +80,7 @@ class InsertCDFragment : Fragment() {
                 editTextImgDisk
             ) { isValid ->
                 if (isValid) {  // Recupera i valori inseriti dall'utente
-                    val title = editTextNomeDisco.text.toString()
+                    val title = modWords(editTextNomeDisco.text.toString())
                     val autori = editTextAutori.text.toString()
                     val hours = editTextHours.text.toString().toIntOrNull() ?: 0
                     val minutes = editTextMinutes.text.toString().toIntOrNull() ?: 0
@@ -285,5 +285,13 @@ class InsertCDFragment : Fragment() {
         }
 
         callback(isValid)
+    }
+
+    //Metodo per rendere prima minuscolo l'inserimento fatto dall'utente nel box 'Title', e poi la prima lettera forzata maiuscola per ogni parola (utile per DB)
+    fun modWords(original: String?): String {
+        if (original.isNullOrEmpty()) return ""
+        return original.lowercase().split(" ").joinToString(" ") {
+            it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+        }
     }
 }

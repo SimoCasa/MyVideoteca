@@ -91,7 +91,7 @@ class InsertBRDVDFragment : Fragment() {
                 editTextLocandina
             ) { isValid ->
                 if (isValid) {  // Recupera i valori inseriti dall'utente
-                    val title = editTextTitle.text.toString()
+                    val title = modWords(editTextTitle.text.toString())
                     val regista = editTextRegista.text.toString()
                     val trama = editTextTrama.text.toString()
                     val hours = editTextHours.text.toString().toIntOrNull() ?: 0
@@ -274,5 +274,13 @@ class InsertBRDVDFragment : Fragment() {
         }
 
         callback(isValid)
+    }
+
+    //Metodo per rendere prima minuscolo l'inserimento fatto dall'utente nel box 'Title', e poi la prima lettera forzata maiuscola per ogni parola (utile per DB)
+    fun modWords(original: String?): String {
+        if (original.isNullOrEmpty()) return ""
+        return original.lowercase().split(" ").joinToString(" ") {
+            it.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+        }
     }
 }
