@@ -1,8 +1,9 @@
 package com.uninsubria.myvideoteca
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,7 +23,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.databinding.ActivityMainBinding
-import androidx.appcompat.widget.SearchView
 
 @Suppress("DEPRECATION")
 class HomePage : AppCompatActivity(){
@@ -131,20 +131,34 @@ class HomePage : AppCompatActivity(){
                 })
         }
         //Bottone icona matita premuto
-        val onClickListener = binding.appBarMain.fab.setOnClickListener {
+        binding.appBarMain.fab.setOnClickListener {
             navController.navigate(R.id.adminOptionsFragment)
             //binding.appBarMain.fab.visibility= View.GONE
         }
     }
 
-
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                // Effettua il logout dall'account Firebase
+                FirebaseAuth.getInstance().signOut()
+                // Avvia l'Activity di accesso (o quella che desideri come schermata di accesso)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                // Chiudi questa Activity
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("MissingSuperCall")
     //DA SISTEMARE SE PREMO DUE VOLTE ESCO ANCHE NEI FRAGMENT
     override fun onBackPressed() {

@@ -1,5 +1,6 @@
 package com.uninsubria.myvideoteca.ui.blueray
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,13 +10,11 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.DetailedBRDVD
 import com.uninsubria.myvideoteca.R
@@ -26,6 +25,7 @@ class BlueRayFragment : Fragment() {
     private var _binding: FragmentBluerayBinding? = null
     private lateinit var listView: ListView
     private lateinit var adapter: BlueRayAdapter
+    private lateinit var path: String
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,18 +72,22 @@ class BlueRayFragment : Fragment() {
     private fun retrieveDataFromFirebase(searchQuery: String? = null) {
         // Esempio di recupero dati da Firebase e aggiornamento dell'adapter
         val databaseReference = FirebaseDatabase.getInstance().getReference("Bluray")
-            val query = if (searchQuery.isNullOrEmpty()) {
+        val query = if (searchQuery.isNullOrEmpty()) {
             databaseReference  // Nessuna ricerca specifica, carica tutti i dati
-             } else {
-                val formattedQuery = modWords(searchQuery.trim())
-                databaseReference.orderByChild("title").startAt(formattedQuery).endAt(formattedQuery + "\uf8ff")
-            }
-            query.addListenerForSingleValueEvent(object : ValueEventListener {
+        } else {
+            val formattedQuery = modWords(searchQuery.trim())
+            databaseReference.orderByChild("title").startAt(formattedQuery).endAt(formattedQuery + "\uf8ff")
+        }
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("RestrictedApi")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val blueRayList = mutableListOf<BlueRayItem>()
                 for (snapshot in dataSnapshot.children) {
                     val blueRay = snapshot.getValue(BlueRayItem::class.java)
-                    blueRay?.let { blueRayList.add(it) }
+                    blueRay?.let {
+                        it.ref = snapshot.ref.path.toString()  // Aggiungi il percorso del nodo corrente
+                        blueRayList.add(it)
+                    }
                 }
                 adapter.updateData(blueRayList)
                 binding.progressBar.visibility = View.GONE
@@ -125,12 +129,12 @@ class BlueRayFragment : Fragment() {
         })
         searchView.setOnSearchClickListener {
             // Quando la barra di ricerca viene aperta, rendi invisibile l'elemento delle impostazioni
-            val settingsMenuItem = menu.findItem(R.id.action_settings)
+            val settingsMenuItem = menu.findItem(R.id.action_logout)
             settingsMenuItem.isVisible = false
         }
         searchView.setOnCloseListener {
             // Quando la barra di ricerca viene chiusa, rendi visibile l'elemento delle impostazioni
-            val settingsMenuItem = menu.findItem(R.id.action_settings)
+            val settingsMenuItem = menu.findItem(R.id.action_logout)
             settingsMenuItem.isVisible = true
             false
         }

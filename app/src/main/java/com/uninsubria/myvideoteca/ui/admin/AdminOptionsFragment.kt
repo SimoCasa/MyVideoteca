@@ -46,17 +46,6 @@ class AdminOptionsFragment : Fragment() {
         btnAddCD.setOnClickListener {
             navController.navigate(R.id.insertCDFragment)
         }
-
-        //Bottone Aggiungi
-        val btnEditArticle = view.findViewById<Button>(R.id.btn_edit_article)
-        btnEditArticle.setOnClickListener {
-            navController.navigate(R.id.editFragment)
-        }
-
-        val btnRemoveArticle = view.findViewById<Button>(R.id.btn_remove_article)
-        btnRemoveArticle.setOnClickListener {
-            navController.navigate(R.id.removeFragment)
-        }
     }
 
     override fun onDestroyView() {

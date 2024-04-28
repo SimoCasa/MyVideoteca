@@ -13,17 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    
-        <com.google.android.material.textview.MaterialTextView
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cdTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="14dp"
             android:text="Nome CD"
-            android:textSize="24sp"
             android:textColor="@color/my_secondary"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+            android:textSize="24sp"
+            app:boxStrokeColor="@android:color/transparent"
+            android:background="@null"
+            android:enabled="false"
+            android:textStyle="bold" />
     
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardImage"
@@ -79,7 +82,7 @@
             android:layout_marginStart="20dp"
             app:cardElevation="8dp">
     
-            <TextView
+            <EditText
                 android:id="@+id/detailAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,6 +91,9 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="2dp"
                 android:text="name"
+                app:boxStrokeColor="@android:color/transparent"
+                android:background="@null"
+                android:enabled="false"
                 android:textSize="16sp" />
     
         </com.google.android.material.card.MaterialCardView>
@@ -110,7 +116,7 @@
             android:layout_marginStart="20dp"
             app:cardElevation="8dp">
 
-            <TextView
+            <EditText
                 android:id="@+id/detailCdDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="26dp"
@@ -119,6 +125,9 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="2dp"
                 android:text="time"
+                app:boxStrokeColor="@android:color/transparent"
+                android:background="@null"
+                android:enabled="false"
                 android:textSize="16sp" />
         </com.google.android.material.card.MaterialCardView>
     
@@ -140,7 +149,7 @@
             android:layout_marginStart="20dp"
             app:cardElevation="8dp">
 
-            <TextView
+            <EditText
                 android:id="@+id/detailRecords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,6 +158,9 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="2dp"
                 android:text="Example"
+                app:boxStrokeColor="@android:color/transparent"
+                android:background="@null"
+                android:enabled="false"
                 android:textSize="16sp" />
         </com.google.android.material.card.MaterialCardView>
     
@@ -170,7 +182,7 @@
             android:layout_marginStart="20dp"
             app:cardElevation="8dp">
     
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="genere"
@@ -179,6 +191,9 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
                 android:textSize="16sp"
+                app:boxStrokeColor="@android:color/transparent"
+                android:background="@null"
+                android:enabled="false"
                 android:id="@+id/detailGenre"/>
         </com.google.android.material.card.MaterialCardView>
     
@@ -200,7 +215,7 @@
             android:layout_marginStart="20dp"
             app:cardElevation="8dp">
     
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="number"
@@ -209,35 +224,78 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
                 android:textSize="16sp"
+                app:boxStrokeColor="@android:color/transparent"
+                android:background="@null"
+                android:enabled="false"
                 android:id="@+id/detailTracks"/>
     
         </com.google.android.material.card.MaterialCardView>
-    
-        <!-- Bottone Inserisci -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCdBook"
-            style="@style/MyRoundedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Prenota"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
-            app:layout_constraintStart_toStartOf="parent" />
-    
+            android:layout_marginTop="20dp">
+
+            <!-- Bottone Modifica -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                style="@style/MyRoundedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Modifica"
+                android:textSize="15sp"
+                android:layout_marginStart="25dp"
+                android:backgroundTint="#D0FFA200"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Bottone Prenota -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBook"
+                style="@style/MyRoundedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Prenota"
+                android:layout_marginStart="35dp"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Bottone Rimuovi -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRemove"
+                style="@style/MyRoundedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Elimina"
+                android:layout_marginStart="35dp"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="#CEDA1B1B"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+
         <!-- Imposto la scritta se disponibile o meno -->
         <TextView
+            android:id="@+id/bookState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="disponibilità"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="2dp"
-            android:textSize="12sp"
+            android:layout_below="@id/btnBook"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/bookCdState"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="2dp"
+            android:text="disponibilità"
+            android:textSize="12sp" />
 
     </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

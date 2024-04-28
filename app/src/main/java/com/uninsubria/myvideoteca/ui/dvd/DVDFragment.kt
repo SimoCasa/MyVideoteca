@@ -1,5 +1,6 @@
 package com.uninsubria.myvideoteca.ui.dvd
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,6 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.ProgressBar
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.DetailedBRDVD
 import com.uninsubria.myvideoteca.R
 import com.uninsubria.myvideoteca.databinding.FragmentDvdBinding
-import com.uninsubria.myvideoteca.ui.blueray.BlueRayItem
 
 class DVDFragment : Fragment() {
 
@@ -81,11 +80,14 @@ class DVDFragment : Fragment() {
             databaseReference.orderByChild("title").startAt(formattedQuery).endAt(formattedQuery + "\uf8ff")
         }
         query.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("RestrictedApi")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val dvdList = mutableListOf<DVDItem>()
                 for (snapshot in dataSnapshot.children) {
                     val dvd = snapshot.getValue(DVDItem::class.java)
-                    dvd?.let { dvdList.add(it) }
+                    dvd?.let {
+                        it.ref = snapshot.ref.path.toString()  // Aggiungi il percorso del nodo corrente
+                        dvdList.add(it) }
                 }
                 adapter.updateData(dvdList)
                 binding.progressBar.visibility = View.GONE
@@ -129,12 +131,12 @@ class DVDFragment : Fragment() {
         })
         searchView.setOnSearchClickListener {
             // Quando la barra di ricerca viene aperta, rendi invisibile l'elemento delle impostazioni
-            val settingsMenuItem = menu.findItem(R.id.action_settings)
+            val settingsMenuItem = menu.findItem(R.id.action_logout)
             settingsMenuItem.isVisible = false
         }
         searchView.setOnCloseListener {
             // Quando la barra di ricerca viene chiusa, rendi visibile l'elemento delle impostazioni
-            val settingsMenuItem = menu.findItem(R.id.action_settings)
+            val settingsMenuItem = menu.findItem(R.id.action_logout)
             settingsMenuItem.isVisible = true
             false
         }

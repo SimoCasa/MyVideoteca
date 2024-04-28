@@ -6,7 +6,9 @@ data class DVDItem( val durata: String="",
                     val regista: String="",
                     val title: String="",
                     val trama: String="",
+                    var ref: String="",
                     val locandina: String="") : Serializable{
+
     // Costruttore senza argomenti richiesto da Firebase
     constructor() : this("", "", "", "", "")
 }

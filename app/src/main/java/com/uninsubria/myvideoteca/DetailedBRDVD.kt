@@ -1,14 +1,41 @@
 package com.uninsubria.myvideoteca
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.uninsubria.myvideoteca.ui.blueray.BlueRayItem
-import com.google.android.material.textview.MaterialTextView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.ui.dvd.DVDItem
 
 class DetailedBRDVD : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var filmTitle: TextInputEditText
+    private lateinit var detailDirector: EditText
+    private lateinit var detailDuration: EditText
+    private lateinit var detailPlot: EditText
+    private lateinit var btnBook: MaterialButton
+    private lateinit var btnEdit: MaterialButton
+    private lateinit var btnRemove: MaterialButton
+    private lateinit var selectedBlueRay: BlueRayItem
+    private lateinit var selectedDVD: DVDItem
+    private lateinit var myRef : DatabaseReference
+    private var admin: Boolean = false
+    private lateinit var disk : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,13 +45,17 @@ class DetailedBRDVD : AppCompatActivity() {
         val intent = intent
         val callingActivity = intent.getStringExtra("callingActivity")
 
+        initElements()
+
+        //SE ARRIVA DA BLUERAY
         if (callingActivity == "ActivityBlue") {
-            val selectedBlueRay = intent.getSerializableExtra("selectedBlueRay") as BlueRayItem
+            disk="BR"
+            selectedBlueRay = intent.getSerializableExtra("selectedBlueRay") as BlueRayItem
             // Imposta i dettagli dell'elemento selezionato nei vari elementi del layout
-            findViewById<MaterialTextView>(R.id.filmTitle).text = selectedBlueRay.title
-            findViewById<MaterialTextView>(R.id.detailDirector).text = selectedBlueRay.regista
-            findViewById<MaterialTextView>(R.id.detailDuration).text = selectedBlueRay.durata
-            findViewById<MaterialTextView>(R.id.detailPlot).text = selectedBlueRay.trama
+            filmTitle.setText(selectedBlueRay.title)
+            detailDirector.setText(selectedBlueRay.regista)
+            detailDuration.setText(selectedBlueRay.durata)
+            detailPlot.setText(selectedBlueRay.trama)
             // Aggiungi altre view per altri dettagli se necessario
             Log.d("Link Immagine",selectedBlueRay.locandina)
 
@@ -38,13 +69,15 @@ class DetailedBRDVD : AppCompatActivity() {
                 .into(findViewById(R.id.filmBlurredImg))
             //Imposto che se il titolo risulta già preso in prestito blocco il bottone
 
+        //SE ARRIVA DA DVD
         } else if (callingActivity == "ActivityDVD") {
-            val selectedDVD = intent.getSerializableExtra("selectedDVD") as DVDItem
+            disk="DVD"
+            selectedDVD = intent.getSerializableExtra("selectedDVD") as DVDItem
             // Imposta i dettagli dell'elemento selezionato nei vari elementi del layout
-            findViewById<MaterialTextView>(R.id.filmTitle).text = selectedDVD.title
-            findViewById<MaterialTextView>(R.id.detailDirector).text = selectedDVD.regista
-            findViewById<MaterialTextView>(R.id.detailDuration).text = selectedDVD.durata
-            findViewById<MaterialTextView>(R.id.detailPlot).text = selectedDVD.trama
+            filmTitle.setText(selectedDVD.title)
+            detailDirector.setText(selectedDVD.regista)
+            detailDuration.setText(selectedDVD.durata)
+            detailPlot.setText(selectedDVD.trama)
             // Aggiungi altre view per altri dettagli se necessario
             Log.d("Link Immagine",selectedDVD.locandina)
 
@@ -56,8 +89,132 @@ class DetailedBRDVD : AppCompatActivity() {
                 .load(selectedDVD.locandina)
                 .error(R.drawable.dvd_disk)
                 .into(findViewById(R.id.filmBlurredImg))
+
             //Imposto che se il titolo risulta già preso in prestito blocco il bottone
         }
 
+        //Prendo istanza
+        auth = FirebaseAuth.getInstance()
+        val firebaseUser = auth.currentUser!!
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(firebaseUser.uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val rule = snapshot.child("rule").value
+                    if(rule=="admin"){
+                        admin=true  //imposta se l'utente è veramente un admin
+                        filmTitle.isEnabled=true
+                        detailDirector.isEnabled=true
+                        detailDuration.isEnabled=true
+                        detailPlot.isEnabled=true
+                        btnRemove.visibility = View.VISIBLE
+                        btnEdit.visibility = View.VISIBLE
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+        //Alla pressione del bottone MODIFICA
+        btnEdit.setOnClickListener{
+            if(admin){
+                val newTitle = filmTitle.text.toString()
+                val newDirector = detailDirector.text.toString()
+                val newDuration = detailDuration.text.toString()
+                val newPlot = detailPlot.text.toString()
+
+                // Ottieni un riferimento al database
+                val database = FirebaseDatabase.getInstance()
+
+
+                // Ottieni un riferimento all'elemento che vuoi modificare
+                if(disk=="BR"){ myRef = database.getReference(selectedBlueRay.ref)}
+                else if(disk=="DVD"){ myRef = database.getReference(selectedDVD.ref)}
+
+                // Crea un oggetto con i dati che vuoi aggiornare
+                val updatedData = HashMap<String, Any>()
+                updatedData["durata"] = newDuration
+                updatedData["regista"] = newDirector
+                updatedData["title"] = newTitle
+                updatedData["trama"] = newPlot
+
+                // Aggiorna l'elemento
+                myRef.updateChildren(updatedData).addOnSuccessListener {
+                    // L'aggiornamento è stato completato con successo, avvia un'altra Activity
+                    val intent = Intent(this, HomePage::class.java)
+                    startActivity(intent)
+                    Toast.makeText(this, "Modifica effettuata con successo", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    // L'aggiornamento è fallito, mostra un messaggio Toast
+                    Toast.makeText(this, "Modifica non convalidata", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        //Alla pressione del bottone RIMUOVI
+        btnRemove.setOnClickListener{
+            if(admin){
+                // Crea un AlertDialog
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Conferma")
+                builder.setMessage("Sei sicuro di rimuovere definitivamente l'elemento?")
+
+                // Imposta il pulsante "Sì"
+                builder.setPositiveButton("Sì", null)
+
+                // Imposta il pulsante "No"
+                builder.setNegativeButton("No", null)
+
+                // Mostra l'AlertDialog
+                val dialog = builder.show()
+
+                // Cambia il colore del testo del pulsante "Sì"
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.my_secondary))
+
+                // Cambia il colore del testo del pulsante "No"
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.my_secondary))
+
+                // Imposta l'azione del pulsante "Sì"
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    // Ottieni un riferimento al database
+                    val database = FirebaseDatabase.getInstance()
+                    // Ottieni un riferimento all'elemento che vuoi modificare
+                    if(disk=="BR"){ myRef = database.getReference(selectedBlueRay.ref)}
+                    else if(disk=="DVD"){ myRef = database.getReference(selectedDVD.ref)}
+                    // Elimina l'oggetto
+                    myRef.removeValue().addOnSuccessListener {
+                        // L'eliminazione è stata completata con successo
+                        val intent = Intent(this, HomePage::class.java)
+                        startActivity(intent)
+                        Toast.makeText(this, "Oggetto eliminato con successo", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }.addOnFailureListener {
+                        // L'eliminazione è fallita
+                        Toast.makeText(this, "Eliminazione non riuscita", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                // Imposta l'azione del pulsante "No"
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+                    // Chiudi il dialogo
+                    dialog.dismiss()
+                }
+            }
+        }
+
+
+    }
+
+    //Assegnazione delle variabili agli elementi
+    private fun initElements() {
+        filmTitle=findViewById<TextInputEditText>(R.id.filmTitle)
+        detailDirector=findViewById<EditText>(R.id.detailDirector)
+        detailDuration=findViewById<EditText>(R.id.detailDuration)
+        detailPlot=findViewById<EditText>(R.id.detailPlot)
+        btnBook=findViewById<MaterialButton>(R.id.btnBook)
+        btnEdit=findViewById<MaterialButton>(R.id.btnEdit)
+        btnRemove=findViewById<MaterialButton>(R.id.btnRemove)
     }
 }

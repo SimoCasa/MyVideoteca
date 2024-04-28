@@ -5,180 +5,234 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/filmTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:text="Nome Film"
-        android:textSize="24sp"
-        android:textColor="@color/my_secondary"
-        android:textStyle="bold"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardImage"
-        android:layout_width="380dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/filmTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Nome Film"
+            android:enabled="false"
+            app:boxStrokeColor="@android:color/transparent"
+            android:background="@null"
+            android:textSize="24sp"
+            android:textColor="@color/my_secondary"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/my_primary">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardImage"
+            android:layout_width="380dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp">
 
-        <!-- Immagine sfocata che copre i bordi laterali -->
-            <ImageView
-                android:id="@+id/filmBlurredImg"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/login_background"
-                android:alpha="0.2"
-                android:scaleType="centerCrop"/>
+                android:background="@color/my_primary">
 
-        <!-- ImageView verticale al centro -->
-            <ImageView
-                android:id="@+id/filmImg"
-                android:layout_width="380dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:src="@drawable/login_background"/>
+            <!-- Immagine sfocata che copre i bordi laterali -->
+                <ImageView
+                    android:id="@+id/filmBlurredImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/login_background"
+                    android:alpha="0.2"
+                    android:scaleType="centerCrop"/>
 
-        </FrameLayout>
-    </com.google.android.material.card.MaterialCardView>
+            <!-- ImageView verticale al centro -->
+                <ImageView
+                    android:id="@+id/filmImg"
+                    android:layout_width="380dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/login_background"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Regista:"
-        android:textColor="@color/my_secondary"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:textSize="18sp"/>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        app:cardElevation="8dp">
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="name"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:textSize="16sp"
-            android:id="@+id/detailDirector"/>
+            android:text="Regista:"
+            android:textColor="@color/my_secondary"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:textSize="18sp"/>
 
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Durata:"
-        android:textColor="@color/my_secondary"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"/>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        app:cardElevation="8dp">
-        <TextView
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="time"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:textSize="16sp"
-            android:id="@+id/detailDuration"/>
-    </com.google.android.material.card.MaterialCardView>
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            app:cardElevation="8dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trama:"
-        android:textColor="@color/my_secondary"
-        android:textStyle="bold"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/detailDirector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@null"
+                android:text="name"
+                android:enabled="false"
+                android:textSize="16sp"
+                app:boxStrokeColor="@android:color/transparent" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        app:cardElevation="8dp">
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tesst"
-            android:layout_marginStart="10dp"
+            android:text="Durata:"
+            android:textColor="@color/my_secondary"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            app:cardElevation="8dp">
+
+            <EditText
+                android:id="@+id/detailDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@null"
+                android:enabled="false"
+                android:text="time"
+                android:textSize="16sp"
+                app:boxStrokeColor="@android:color/transparent" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trama:"
+            android:textColor="@color/my_secondary"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            app:cardElevation="8dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tesst"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textSize="16sp"
+                app:boxStrokeColor="@android:color/transparent"
+                android:background="@null"
+                android:enabled="false"
+                android:id="@+id/detailPlot"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+            <!-- Bottone Modifica -->
+
+            <!-- Bottone Prenota -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                style="@style/MyRoundedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="#D0FFA200"
+                android:text="Modifica"
+                android:textSize="15sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBook"
+                style="@style/MyRoundedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Prenota"
+                android:layout_marginStart="35dp"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Bottone Rimuovi -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRemove"
+                style="@style/MyRoundedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Elimina"
+                android:layout_marginStart="35dp"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="#CEDA1B1B"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+
+        <!-- Imposto la scritta se disponibile o meno -->
+        <TextView
+            android:id="@+id/bookState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnBook"
+            android:layout_gravity="center_horizontal"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:textSize="16sp"
-            android:id="@+id/detailPlot"/>
+            android:text="disponibilità"
+            android:textSize="12sp" />
 
-    </com.google.android.material.card.MaterialCardView>
 
-    <!-- Bottone Inserisci -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnBook"
-        style="@style/MyRoundedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Prenota"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_gravity="center_horizontal"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Imposto la scritta se disponibile o meno -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="disponibilità"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:textSize="12sp"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/bookState"/>
-
-</LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

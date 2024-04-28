@@ -57,29 +57,8 @@
             android:text="Aggiungi CD"
             android:textSize="18sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="35dp" /> <!-- Spazio verticale aggiunto -->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_edit_article"
-            style="@style/MyRoundedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Modifica Articolo"
-            android:textSize="18sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="35dp" /> <!-- Spazio verticale aggiunto -->
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_remove_article"
-            style="@style/MyRoundedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rimuovi Articolo"
-            android:textSize="18sp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
