@@ -2,9 +2,13 @@ package com.uninsubria.myvideoteca
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +37,7 @@ class DetailedBRDVD : AppCompatActivity() {
     private lateinit var btnRemove: MaterialButton
     private lateinit var selectedBlueRay: BlueRayItem
     private lateinit var selectedDVD: DVDItem
+    private lateinit var Available: TextView
     private lateinit var myRef : DatabaseReference
     private var admin: Boolean = false
     private lateinit var disk : String
@@ -56,6 +61,37 @@ class DetailedBRDVD : AppCompatActivity() {
             detailDirector.setText(selectedBlueRay.regista)
             detailDuration.setText(selectedBlueRay.durata)
             detailPlot.setText(selectedBlueRay.trama)
+            // Verifico se il prodotto è disponibile da DB
+            if(selectedBlueRay.available == true){
+                val fullText = "Disponibilità: SÌ"
+                val spannableString = SpannableString(fullText)
+                // Definisci il colore verde per il testo
+                val greenColor = ContextCompat.getColor(this, R.color.dark_green)
+                // Applica lo stile Span
+                spannableString.setSpan(
+                    ForegroundColorSpan(greenColor),
+                    fullText.indexOf("SÌ"),
+                    fullText.indexOf("SÌ") + "SÌ".length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                Available.text = spannableString
+            }
+            else if (selectedBlueRay.available == false){
+                val fullText = "Disponibilità: NO"
+                val spannableString = SpannableString(fullText)
+                // Definisci il colore verde per il testo
+                val redColor = ContextCompat.getColor(this, R.color.red)
+                // Applica lo stile Span
+                spannableString.setSpan(
+                    ForegroundColorSpan(redColor),
+                    fullText.indexOf("NO"),
+                    fullText.indexOf("NO") + "NO".length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                Available.text = spannableString
+            }
+
             // Aggiungi altre view per altri dettagli se necessario
             Log.d("Link Immagine",selectedBlueRay.locandina)
 
@@ -78,6 +114,37 @@ class DetailedBRDVD : AppCompatActivity() {
             detailDirector.setText(selectedDVD.regista)
             detailDuration.setText(selectedDVD.durata)
             detailPlot.setText(selectedDVD.trama)
+            // Verifico se il prodotto è disponibile da DB
+            if(selectedDVD.available == true){
+                val fullText = "Disponibilità: SÌ"
+                val spannableString = SpannableString(fullText)
+                // Definisci il colore verde per il testo
+                val greenColor = ContextCompat.getColor(this, R.color.dark_green)
+                // Applica lo stile Span
+                spannableString.setSpan(
+                    ForegroundColorSpan(greenColor),
+                    fullText.indexOf("SÌ"),
+                    fullText.indexOf("SÌ") + "SÌ".length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                Available.text = spannableString
+            }
+            else if (selectedDVD.available == false){
+                val fullText = "Disponibilità: NO"
+                val spannableString = SpannableString(fullText)
+                // Definisci il colore verde per il testo
+                val redColor = ContextCompat.getColor(this, R.color.red)
+                // Applica lo stile Span
+                spannableString.setSpan(
+                    ForegroundColorSpan(redColor),
+                    fullText.indexOf("NO"),
+                    fullText.indexOf("NO") + "NO".length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                Available.text = spannableString
+            }
+
             // Aggiungi altre view per altri dettagli se necessario
             Log.d("Link Immagine",selectedDVD.locandina)
 
@@ -216,5 +283,6 @@ class DetailedBRDVD : AppCompatActivity() {
         btnBook=findViewById<MaterialButton>(R.id.btnBook)
         btnEdit=findViewById<MaterialButton>(R.id.btnEdit)
         btnRemove=findViewById<MaterialButton>(R.id.btnRemove)
+        Available = findViewById<TextView>(R.id.AvailableState)
     }
 }

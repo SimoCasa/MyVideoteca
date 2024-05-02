@@ -2,9 +2,13 @@ package com.uninsubria.myvideoteca
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +34,7 @@ private lateinit var detailRecords: EditText
 private lateinit var detailGenre: EditText
 private lateinit var detailTracks: EditText
 private lateinit var selectedCD: CDItem
+private lateinit var Available: TextView
 private lateinit var btnBook: MaterialButton
 private lateinit var btnEdit: MaterialButton
 private lateinit var btnRemove: MaterialButton
@@ -51,6 +56,37 @@ class DetailedCD : AppCompatActivity(){
         detailRecords.setText(selectedCD.casa_discografica)
         detailGenre.setText(selectedCD.genere)
         detailTracks.setText(selectedCD.track)
+
+        // Verifico se il prodotto è disponibile da DB
+        if(selectedCD.available == true){
+            val fullText = "Disponibilità: SÌ"
+            val spannableString = SpannableString(fullText)
+            // Definisci il colore verde per il testo
+            val greenColor = ContextCompat.getColor(this, R.color.dark_green)
+            // Applica lo stile Span
+            spannableString.setSpan(
+                ForegroundColorSpan(greenColor),
+                fullText.indexOf("SÌ"),
+                fullText.indexOf("SÌ") + "SÌ".length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            Available.text = spannableString
+        }
+        else if (selectedCD.available == false){
+            val fullText = "Disponibilità: NO"
+            val spannableString = SpannableString(fullText)
+            // Definisci il colore verde per il testo
+            val redColor = ContextCompat.getColor(this, R.color.red)
+            // Applica lo stile Span
+            spannableString.setSpan(
+                ForegroundColorSpan(redColor),
+                fullText.indexOf("NO"),
+                fullText.indexOf("NO") + "NO".length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            Available.text = spannableString
+        }
 
 
         // Aggiungi altre view per altri dettagli se necessario
@@ -192,5 +228,6 @@ class DetailedCD : AppCompatActivity(){
         btnBook=findViewById(R.id.btnBook)
         btnEdit=findViewById(R.id.btnEdit)
         btnRemove=findViewById(R.id.btnRemove)
+        Available = findViewById<TextView>(R.id.AvailableState)
     }
 }

@@ -169,6 +169,8 @@ class InsertCDFragment : Fragment() {
                 "genere" to genere,
                 "track" to track,
                 "durata" to durata,
+                "uid" to currentUserUID,
+                "available" to true, // validità impostata su 'True' di base.
                 "img" to img
             )
 

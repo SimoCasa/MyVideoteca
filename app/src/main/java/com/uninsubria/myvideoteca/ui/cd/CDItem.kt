@@ -8,9 +8,10 @@ data class CDItem(val durata: String="",
                    val casa_discografica: String="",
                    val genere: String="",
                    val track: String="",
-                  var ref: String="",
+                   var ref: String="",
+                   var available: Boolean = true,
                    val img: String="") : Serializable {
 
     // Costruttore senza argomenti richiesto da Firebase
-    constructor() : this("", "", "", "", "","", "")
+    constructor() : this("", "", "", "", "","", "",true)
 }

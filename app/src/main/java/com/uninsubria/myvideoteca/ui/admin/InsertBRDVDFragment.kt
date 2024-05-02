@@ -180,6 +180,7 @@ class InsertBRDVDFragment : Fragment() {
                 "trama" to trama,
                 "durata" to durata,
                 "uid" to currentUserUID,
+                "available" to true, // validità impostata su 'True' di base.
                 "locandina" to locandina
             )
 
