@@ -16,5 +16,17 @@
             android:id="@+id/nav_cd"
             android:icon="@drawable/ic_menu_cd"
             android:title="@string/menu_cd" />
+        <!-- Aggiungi qui il separatore -->
+        <item
+            android:id="@+id/nav_separator"
+            android:title=""
+            android:icon="@drawable/menu_separator"
+            android:enabled="false"
+            android:checkable="false"
+            />
+        <item
+            android:id="@+id/nav_book"
+            android:icon="@android:drawable/ic_input_get"
+            android:title="@string/menu_book" />
     </group>
 </menu>

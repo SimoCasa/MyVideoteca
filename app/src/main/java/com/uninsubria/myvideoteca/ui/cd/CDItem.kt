@@ -10,6 +10,7 @@ data class CDItem(val durata: String="",
                    val track: String="",
                    var ref: String="",
                    var available: Boolean = true,
+                   var userId: String ="",
                    val img: String="") : Serializable {
 
     // Costruttore senza argomenti richiesto da Firebase

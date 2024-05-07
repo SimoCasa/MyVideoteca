@@ -91,7 +91,7 @@ class HomePage : AppCompatActivity(){
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_blueray, R.id.nav_dvd, R.id.nav_cd
+                R.id.nav_blueray, R.id.nav_dvd, R.id.nav_cd,R.id.nav_book
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -108,9 +108,7 @@ class HomePage : AppCompatActivity(){
                             if (destination.id == R.id.adminOptionsFragment ||
                                 destination.id == R.id.insertBRDVDFragment ||
                                 destination.id == R.id.insertCDFragment ||
-                                destination.id == R.id.editFragment ||
-                                destination.id == R.id.insertCDFragment ||
-                                destination.id == R.id.removeFragment) {
+                                destination.id == R.id.insertCDFragment) {
                                 binding.appBarMain.fab.visibility = View.GONE
                             } else {
                                 binding.appBarMain.fab.visibility = View.VISIBLE
@@ -118,7 +116,8 @@ class HomePage : AppCompatActivity(){
                         }else if (rule == "user"){
                             if (destination.id == R.id.nav_cd ||
                                 destination.id == R.id.nav_blueray ||
-                                destination.id == R.id.nav_dvd) {
+                                destination.id == R.id.nav_dvd ||
+                                destination.id == R.id.nav_book) {
                                 binding.appBarMain.fab.visibility = View.GONE
                             } else {
                                 binding.appBarMain.fab.visibility = View.VISIBLE

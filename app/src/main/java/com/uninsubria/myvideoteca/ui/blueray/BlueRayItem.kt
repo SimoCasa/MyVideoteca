@@ -7,6 +7,7 @@ data class BlueRayItem(val durata: String="",
                        val trama: String="",
                        var ref: String="",
                        var available: Boolean = true,
+                       var userId: String ="",
                        val locandina: String="") : Serializable{
                             // Costruttore senza argomenti richiesto da Firebase
                             constructor() : this("", "", "", "", "",true)

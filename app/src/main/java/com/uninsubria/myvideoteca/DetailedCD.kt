@@ -63,6 +63,8 @@ class DetailedCD : AppCompatActivity(){
             val spannableString = SpannableString(fullText)
             // Definisci il colore verde per il testo
             val greenColor = ContextCompat.getColor(this, R.color.dark_green)
+            //Abilitato il tasto
+            btnBook.isEnabled = true
             // Applica lo stile Span
             spannableString.setSpan(
                 ForegroundColorSpan(greenColor),
@@ -78,6 +80,8 @@ class DetailedCD : AppCompatActivity(){
             val spannableString = SpannableString(fullText)
             // Definisci il colore verde per il testo
             val redColor = ContextCompat.getColor(this, R.color.red)
+            //Disabilito il tasto
+            btnBook.isEnabled = false
             // Applica lo stile Span
             spannableString.setSpan(
                 ForegroundColorSpan(redColor),
@@ -119,6 +123,7 @@ class DetailedCD : AppCompatActivity(){
                         detailTracks.isEnabled=true
                         btnRemove.visibility = View.VISIBLE
                         btnEdit.visibility = View.VISIBLE
+                        btnBook.isEnabled = false
                     }
                 }
 
@@ -165,6 +170,43 @@ class DetailedCD : AppCompatActivity(){
                 }
             }
         }
+
+        //Alla pressione del bottone PRENOTA
+        btnBook.setOnClickListener{
+            // Recupero l'ID dell'utente corrente
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                val currentUserId = currentUser.uid
+                if(selectedCD.available == true){
+                        // DVD è disponibile, quindi procedo con la prenotazione
+                        val database = FirebaseDatabase.getInstance()
+                        // Ottieni un riferimento all'elemento che vuoi modificare
+                        myRef = database.getReference(selectedCD.ref)
+
+                        // Crea un oggetto con i dati che vuoi aggiornare
+                        val updatedData = HashMap<String, Any>()
+                        updatedData["available"] = false
+                        updatedData["userId"] = currentUserId
+
+                        // Aggiorna l'elemento
+                        myRef.updateChildren(updatedData).addOnSuccessListener {
+                            // L'aggiornamento è stato completato con successo, avvia un'altra Activity
+                            val intent = Intent(this, HomePage::class.java)
+                            startActivity(intent)
+                            Toast.makeText(this, "CD prenotato con successo!", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener {
+                            Toast.makeText(this, "Errore durante la prenotazione del CD", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                else if (selectedCD.available == false){
+                        // DVD non è disponibile
+                        Toast.makeText(this, "Questo CD non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+
+
 
         //Alla pressione del bottone RIMUOVI
         btnRemove.setOnClickListener{

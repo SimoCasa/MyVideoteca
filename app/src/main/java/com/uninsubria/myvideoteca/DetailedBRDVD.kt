@@ -41,6 +41,7 @@ class DetailedBRDVD : AppCompatActivity() {
     private lateinit var myRef : DatabaseReference
     private var admin: Boolean = false
     private lateinit var disk : String
+    private lateinit var callingActivity: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,7 @@ class DetailedBRDVD : AppCompatActivity() {
 
         // Ottieni i dati relativi all'elemento selezionato passati dall'intent
         val intent = intent
-        val callingActivity = intent.getStringExtra("callingActivity")
+        callingActivity = intent.getStringExtra("callingActivity").toString()
 
         initElements()
 
@@ -67,6 +68,8 @@ class DetailedBRDVD : AppCompatActivity() {
                 val spannableString = SpannableString(fullText)
                 // Definisci il colore verde per il testo
                 val greenColor = ContextCompat.getColor(this, R.color.dark_green)
+                //Abilitato il tasto
+                btnBook.isEnabled = true
                 // Applica lo stile Span
                 spannableString.setSpan(
                     ForegroundColorSpan(greenColor),
@@ -82,6 +85,8 @@ class DetailedBRDVD : AppCompatActivity() {
                 val spannableString = SpannableString(fullText)
                 // Definisci il colore verde per il testo
                 val redColor = ContextCompat.getColor(this, R.color.red)
+                //Disabilito il tasto
+                btnBook.isEnabled = false
                 // Applica lo stile Span
                 spannableString.setSpan(
                     ForegroundColorSpan(redColor),
@@ -120,6 +125,8 @@ class DetailedBRDVD : AppCompatActivity() {
                 val spannableString = SpannableString(fullText)
                 // Definisci il colore verde per il testo
                 val greenColor = ContextCompat.getColor(this, R.color.dark_green)
+                //Abilitato il tasto
+                btnBook.isEnabled = true
                 // Applica lo stile Span
                 spannableString.setSpan(
                     ForegroundColorSpan(greenColor),
@@ -135,6 +142,8 @@ class DetailedBRDVD : AppCompatActivity() {
                 val spannableString = SpannableString(fullText)
                 // Definisci il colore verde per il testo
                 val redColor = ContextCompat.getColor(this, R.color.red)
+                //Disabilito il tasto
+                btnBook.isEnabled = false
                 // Applica lo stile Span
                 spannableString.setSpan(
                     ForegroundColorSpan(redColor),
@@ -176,6 +185,7 @@ class DetailedBRDVD : AppCompatActivity() {
                         detailPlot.isEnabled=true
                         btnRemove.visibility = View.VISIBLE
                         btnEdit.visibility = View.VISIBLE
+                        btnBook.isEnabled = false
                     }
                 }
 
@@ -217,6 +227,71 @@ class DetailedBRDVD : AppCompatActivity() {
                 }.addOnFailureListener {
                     // L'aggiornamento è fallito, mostra un messaggio Toast
                     Toast.makeText(this, "Modifica non convalidata", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        //Alla pressione del bottone PRENOTA
+        btnBook.setOnClickListener{
+            // Recupero l'ID dell'utente corrente
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                val currentUserId = currentUser.uid
+                if(callingActivity == "ActivityBlue"){
+                    if(selectedBlueRay.available == true){
+                        val database = FirebaseDatabase.getInstance()
+
+                        // Ottieni un riferimento all'elemento che vuoi modificare
+                        if(disk=="BR"){ myRef = database.getReference(selectedBlueRay.ref)}
+                        else if(disk=="DVD"){ myRef = database.getReference(selectedDVD.ref)}
+
+                        // Crea un oggetto con i dati che vuoi aggiornare
+                        val updatedData = HashMap<String, Any>()
+                        updatedData["available"] = false
+                        updatedData["userId"] = currentUserId
+
+                        // Aggiorna l'elemento
+                        myRef.updateChildren(updatedData).addOnSuccessListener {
+                            // L'aggiornamento è stato completato con successo, avvia un'altra Activity
+                            val intent = Intent(this, HomePage::class.java)
+                            startActivity(intent)
+                            Toast.makeText(this, "Blu-ray prenotato con successo!", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener {
+                            Toast.makeText(this, "Errore durante la prenotazione del Blu-ray.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else if (selectedBlueRay.available== false){
+                        // Blu-ray non è disponibile
+                        Toast.makeText(this, "Questo Blu-ray non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
+                    }
+                }
+                else if (callingActivity == "ActivityDVD"){
+                    if(selectedDVD.available == true){
+                        // DVD è disponibile, quindi procedo con la prenotazione
+                        val database = FirebaseDatabase.getInstance()
+
+                        // Ottieni un riferimento all'elemento che vuoi modificare
+                        if(disk=="BR"){ myRef = database.getReference(selectedBlueRay.ref)}
+                        else if(disk=="DVD"){ myRef = database.getReference(selectedDVD.ref)}
+
+                        // Crea un oggetto con i dati che vuoi aggiornare
+                        val updatedData = HashMap<String, Any>()
+                        updatedData["available"] = false
+                        updatedData["userId"] = currentUserId
+
+                        // Aggiorna l'elemento
+                        myRef.updateChildren(updatedData).addOnSuccessListener {
+                            // L'aggiornamento è stato completato con successo, avvia un'altra Activity
+                            val intent = Intent(this, HomePage::class.java)
+                            startActivity(intent)
+                            Toast.makeText(this, "DVD prenotato con successo!", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener {
+                            Toast.makeText(this, "Errore durante la prenotazione del DVD", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    else if (selectedDVD.available == false){
+                        // DVD non è disponibile
+                        Toast.makeText(this, "Questo DVD non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

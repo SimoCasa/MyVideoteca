@@ -15,4 +15,5 @@
     <string name="insertcd">Inserisci CD\n</string>
     <string name="editItem">Modifica Elementi</string>
     <string name="removeItem">Rimuovi Elemento</string>
+    <string name="menu_book">Prenotazioni</string>
 </resources>
