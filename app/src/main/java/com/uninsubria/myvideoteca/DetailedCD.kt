@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.uninsubria.myvideoteca.ui.dvd.CDItem
+import androidx.navigation.findNavController
+
 
 private lateinit var auth: FirebaseAuth
 private var admin: Boolean = false
@@ -160,9 +162,8 @@ class DetailedCD : AppCompatActivity(){
 
                 // Aggiorna l'elemento
                 myRef.updateChildren(updatedData).addOnSuccessListener {
-                    // L'aggiornamento è stato completato con successo, avvia un'altra Activity
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
+                    // L'aggiornamento è stato completato con successo, ricarica il fragment
+                    backHome()
                     Toast.makeText(this, "Modifica effettuata con successo", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
                     // L'aggiornamento è fallito, mostra un messaggio Toast
@@ -190,17 +191,16 @@ class DetailedCD : AppCompatActivity(){
 
                         // Aggiorna l'elemento
                         myRef.updateChildren(updatedData).addOnSuccessListener {
-                            // L'aggiornamento è stato completato con successo, avvia un'altra Activity
-                            val intent = Intent(this, HomePage::class.java)
-                            startActivity(intent)
-                            Toast.makeText(this, "CD prenotato con successo!", Toast.LENGTH_SHORT).show()
+                            // L'aggiornamento è stato completato con successo, ricarica il fragment
+                            backHome()
+                            Toast.makeText(this, "${selectedCD.title} prenotato con successo!", Toast.LENGTH_SHORT).show()
                         }.addOnFailureListener {
-                            Toast.makeText(this, "Errore durante la prenotazione del CD", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Errore durante la prenotazione di ${selectedCD.title}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 else if (selectedCD.available == false){
                         // DVD non è disponibile
-                        Toast.makeText(this, "Questo CD non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "${selectedCD.title} non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -240,8 +240,7 @@ class DetailedCD : AppCompatActivity(){
                     // Elimina l'oggetto
                     myRef.removeValue().addOnSuccessListener {
                         // L'eliminazione è stata completata con successo
-                        val intent = Intent(this, HomePage::class.java)
-                        startActivity(intent)
+                        backHome()
                         Toast.makeText(this, "Oggetto eliminato con successo", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }.addOnFailureListener {
@@ -258,6 +257,14 @@ class DetailedCD : AppCompatActivity(){
         }
 
         //Imposto che se il titolo risulta già preso in prestito blocco il bottone
+    }
+    private fun backHome(){
+        val intentHome = Intent(this, HomePage::class.java)
+        startActivity(intentHome)
+    }
+    private fun backCD(){
+        val navController = findNavController(R.id.mobile_navigation)
+        navController.navigate(R.id.nav_cd)
     }
 
     private fun initElements() {

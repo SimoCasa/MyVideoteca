@@ -30,10 +30,10 @@ class BookAdapter(context: Context,
         val imageView = listItemView?.findViewById<ShapeableImageView>(R.id.listImage)
         // Esempio di caricamento immagine con Glide (assicurati di avere le dipendenze aggiunte)
         if (currentItem != null) {
-            if (currentItem.type == "Blu-ray"){
+            if (currentItem.type == "Bluray"){
                 imageView?.let {
                     Glide.with(context)
-                        .load(currentItem?.imageUrl)
+                        .load(currentItem.imageUrl)
                         .error(R.drawable.br_disk)    //Se errata mostra quella base
                         .into(it)
                 }
@@ -42,7 +42,7 @@ class BookAdapter(context: Context,
             else if (currentItem.type == "DVD") {
                 imageView?.let {
                     Glide.with(context)
-                        .load(currentItem?.imageUrl)
+                        .load(currentItem.imageUrl)
                         .error(R.drawable.dvd_disk)    //Se errata mostra quella base
                         .into(it)
                 }
@@ -51,7 +51,7 @@ class BookAdapter(context: Context,
             else if (currentItem.type == "CD") {
                 imageView?.let {
                     Glide.with(context)
-                        .load(currentItem?.imageUrl)
+                        .load(currentItem.imageUrl)
                         .error(R.drawable.cd_disk)    //Se errata mostra quella base
                         .into(it)
                 }

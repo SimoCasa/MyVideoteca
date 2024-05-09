@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.uninsubria.myvideoteca.ui.blueray.BlueRayFragment
+import com.uninsubria.myvideoteca.ui.dvd.DVDFragment
 import com.uninsubria.myvideoteca.ui.dvd.DVDItem
 
 class DetailedBRDVD : AppCompatActivity() {
@@ -159,7 +161,7 @@ class DetailedBRDVD : AppCompatActivity() {
 
             Glide.with(this)
                 .load(selectedDVD.locandina)
-                .error(R.drawable.br_disk)
+                .error(R.drawable.dvd_disk)
                 .into(findViewById(R.id.filmImg))
             Glide.with(this)
                 .load(selectedDVD.locandina)
@@ -220,9 +222,9 @@ class DetailedBRDVD : AppCompatActivity() {
 
                 // Aggiorna l'elemento
                 myRef.updateChildren(updatedData).addOnSuccessListener {
-                    // L'aggiornamento è stato completato con successo, avvia un'altra Activity
-                    val intent = Intent(this, HomePage::class.java)
-                    startActivity(intent)
+                    // L'aggiornamento è stato completato con successo, ricarica il fragment
+                    if(disk=="BR"){ backHome()}
+                    else if(disk=="DVD"){backHome()}
                     Toast.makeText(this, "Modifica effettuata con successo", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
                     // L'aggiornamento è fallito, mostra un messaggio Toast
@@ -251,17 +253,17 @@ class DetailedBRDVD : AppCompatActivity() {
 
                         // Aggiorna l'elemento
                         myRef.updateChildren(updatedData).addOnSuccessListener {
-                            // L'aggiornamento è stato completato con successo, avvia un'altra Activity
-                            val intent = Intent(this, HomePage::class.java)
-                            startActivity(intent)
-                            Toast.makeText(this, "Blu-ray prenotato con successo!", Toast.LENGTH_SHORT).show()
+                            // L'aggiornamento è stato completato con successo, ricarica il fragment
+                            if(disk=="BR"){ backHome()}
+                            else if(disk=="DVD"){ backHome()}
+                            Toast.makeText(this, "${selectedBlueRay.title} prenotato con successo!", Toast.LENGTH_SHORT).show()
                         }.addOnFailureListener {
-                            Toast.makeText(this, "Errore durante la prenotazione del Blu-ray.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Errore durante la prenotazione ddi ${selectedBlueRay.title}.", Toast.LENGTH_SHORT).show()
                         }
                     }
                     else if (selectedBlueRay.available== false){
                         // Blu-ray non è disponibile
-                        Toast.makeText(this, "Questo Blu-ray non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "${selectedBlueRay.title} non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
                     }
                 }
                 else if (callingActivity == "ActivityDVD"){
@@ -280,17 +282,16 @@ class DetailedBRDVD : AppCompatActivity() {
 
                         // Aggiorna l'elemento
                         myRef.updateChildren(updatedData).addOnSuccessListener {
-                            // L'aggiornamento è stato completato con successo, avvia un'altra Activity
-                            val intent = Intent(this, HomePage::class.java)
-                            startActivity(intent)
-                            Toast.makeText(this, "DVD prenotato con successo!", Toast.LENGTH_SHORT).show()
+                            // L'aggiornamento è stato completato con successo, ricarica il fragment
+                            backHome()
+                            Toast.makeText(this, "${selectedDVD.title} prenotato con successo!", Toast.LENGTH_SHORT).show()
                         }.addOnFailureListener {
-                            Toast.makeText(this, "Errore durante la prenotazione del DVD", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Errore durante la prenotazione di ${selectedDVD.title}", Toast.LENGTH_SHORT).show()
                         }
                     }
                     else if (selectedDVD.available == false){
                         // DVD non è disponibile
-                        Toast.makeText(this, "Questo DVD non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "${selectedDVD.title} non è attualmente disponibile per la prenotazione", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -328,9 +329,10 @@ class DetailedBRDVD : AppCompatActivity() {
                     else if(disk=="DVD"){ myRef = database.getReference(selectedDVD.ref)}
                     // Elimina l'oggetto
                     myRef.removeValue().addOnSuccessListener {
-                        // L'eliminazione è stata completata con successo
-                        val intent = Intent(this, HomePage::class.java)
-                        startActivity(intent)
+                        // L'aggiornamento è stato completato con successo, ricarica il fragment
+                        if(disk=="BR"){ backHome()}
+                        else if(disk=="DVD"){backHome()}
+
                         Toast.makeText(this, "Oggetto eliminato con successo", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }.addOnFailureListener {
@@ -348,7 +350,27 @@ class DetailedBRDVD : AppCompatActivity() {
 
 
     }
+    private fun backScreenBlueRay(){
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        val fragment = BlueRayFragment()
+        //transaction.replace(R.id.fragment_container_br, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    private fun backScreenDVD(){
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        val fragment = DVDFragment()
+        //transaction.replace(R.id.fragment_container_dvd, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
+    private fun backHome(){
+        val intentHome = Intent(this, HomePage::class.java)
+        startActivity(intentHome)
+    }
     //Assegnazione delle variabili agli elementi
     private fun initElements() {
         filmTitle=findViewById<TextInputEditText>(R.id.filmTitle)

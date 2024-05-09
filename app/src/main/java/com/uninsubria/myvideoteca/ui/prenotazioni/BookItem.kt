@@ -5,7 +5,7 @@ data class BookItem(
     val imageUrl: String = "",
     val ref: String = "",
     var available: Boolean = true,
-    val userId: String = "", // UID del utente
+    var userId: String = "", // UID del utente
     val type: String = "" // "Blu-ray", "CD", "DVD"
 )
 

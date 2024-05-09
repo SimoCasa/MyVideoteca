@@ -47,4 +47,17 @@
         android:name="com.uninsubria.myvideoteca.ui.admin.InsertCDFragment"
         android:label="@string/insertcd"
         tools:layout="@layout/fragment_insert_cd" />
+
+    <action
+        android:id="@+id/action_to_cdFragment"
+        app:destination="@id/nav_cd" />
+
+    <action
+        android:id="@+id/action_to_dvdFragment"
+        app:destination="@id/nav_dvd" />
+
+    <action
+    android:id="@+id/action_to_brFragment"
+    app:destination="@id/nav_blueray" />
+
 </navigation>

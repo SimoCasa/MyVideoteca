@@ -105,6 +105,11 @@ class HomePage : AppCompatActivity(){
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val rule = snapshot.child("rule").value
                         if (rule == "admin"){
+                            //Nascondo la sezione prenotazione per gli admin
+                            val menu = navView.menu
+                            menu.findItem(R.id.nav_book).isVisible = false
+                            menu.findItem(R.id.nav_separator).isVisible = false
+                            //Seleziono in quali fragment non visualizzare fab per ridondanza
                             if (destination.id == R.id.adminOptionsFragment ||
                                 destination.id == R.id.insertBRDVDFragment ||
                                 destination.id == R.id.insertCDFragment ||
@@ -114,13 +119,14 @@ class HomePage : AppCompatActivity(){
                                 binding.appBarMain.fab.visibility = View.VISIBLE
                             }
                         }else if (rule == "user"){
+                            //Dico in quali sezioni l'utente non visualizza fab
                             if (destination.id == R.id.nav_cd ||
                                 destination.id == R.id.nav_blueray ||
                                 destination.id == R.id.nav_dvd ||
                                 destination.id == R.id.nav_book) {
                                 binding.appBarMain.fab.visibility = View.GONE
                             } else {
-                                binding.appBarMain.fab.visibility = View.VISIBLE
+                                //binding.appBarMain.fab.visibility = View.VISIBLE
                             }
                         }
                     }
