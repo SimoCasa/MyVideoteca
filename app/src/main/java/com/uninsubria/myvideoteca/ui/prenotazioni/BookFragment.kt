@@ -59,29 +59,27 @@ class BookFragment : Fragment() {
     }
 
 
-    private fun fetchData() {
+    private fun fetchData(searchQuery: String? = null) {
         val database = FirebaseDatabase.getInstance()
-
         val mediaReference = database.reference
+        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
         mediaReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Ottieni l'UID dell'utente corrente
-                val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+                mediaItems.clear()  // Clear before adding new items
                 for (mediaSnapshot in dataSnapshot.children) {
                     when (mediaSnapshot.key) {
                         "Bluray" -> {
                             for (snapshot in mediaSnapshot.children) {
                                 val item = snapshot.getValue(BlueRayItem::class.java)
                                 item?.let {
-                                    // Verifica se l'UID dell'utente corrente corrisponde a quello dell'elemento
-                                    if (currentUserUid == it.userId) {
-                                        val itemRef = snapshot.key
+                                    if (currentUserUid == it.userId && (searchQuery.isNullOrEmpty() || it.title.contains(searchQuery, ignoreCase = true))) {
+                                        it.ref = snapshot.key ?: ""
                                         mediaItems.add(
                                             BookItem(
                                                 it.title,
-                                                it.locandina,
-                                                itemRef ?:"", // Utilizza la chiave come ref, se presente
+                                                it.locandina,  // Assuming 'locandina' is the field for the image in Bluray items
+                                                it.ref,
                                                 it.available,
                                                 it.userId,
                                                 "Bluray"
@@ -95,14 +93,13 @@ class BookFragment : Fragment() {
                             for (snapshot in mediaSnapshot.children) {
                                 val item = snapshot.getValue(CDItem::class.java)
                                 item?.let {
-                                    // Verifica se l'UID dell'utente corrente corrisponde a quello dell'elemento
-                                    if (currentUserUid == it.userId) {
-                                        val itemRef = snapshot.key
+                                    if (currentUserUid == it.userId && (searchQuery.isNullOrEmpty() || it.title.contains(searchQuery, ignoreCase = true))) {
+                                        it.ref = snapshot.key ?: ""
                                         mediaItems.add(
                                             BookItem(
                                                 it.title,
-                                                it.img,
-                                                itemRef ?: "",
+                                                it.img,  // Assuming 'img' is the field for the image in CD items
+                                                it.ref,
                                                 it.available,
                                                 it.userId,
                                                 "CD"
@@ -116,14 +113,13 @@ class BookFragment : Fragment() {
                             for (snapshot in mediaSnapshot.children) {
                                 val item = snapshot.getValue(DVDItem::class.java)
                                 item?.let {
-                                    // Verifica se l'UID dell'utente corrente corrisponde a quello dell'elemento
-                                    if (currentUserUid == it.userId) {
-                                        val itemRef = snapshot.key
+                                    if (currentUserUid == it.userId && (searchQuery.isNullOrEmpty() || it.title.contains(searchQuery, ignoreCase = true))) {
+                                        it.ref = snapshot.key ?: ""
                                         mediaItems.add(
                                             BookItem(
                                                 it.title,
-                                                it.locandina,
-                                                itemRef ?: "",
+                                                it.locandina,  // Assuming DVDs use the same field as Bluray for images
+                                                it.ref,
                                                 it.available,
                                                 it.userId,
                                                 "DVD"
@@ -138,58 +134,42 @@ class BookFragment : Fragment() {
                         }
                     }
                 }
-                // Dopo aver caricato i dati, controlla se la lista mediaItems è vuota
-                if (mediaItems.isEmpty()) {
-                    txtNoArticle.visibility = View.VISIBLE // Mostra il TextView se la lista è vuota
-                } else {
-                    txtNoArticle.visibility = View.GONE // Nascondi il TextView se la lista non è vuota
-                }
-
+                txtNoArticle.visibility = if (mediaItems.isEmpty()) View.VISIBLE else View.GONE
                 adapter.notifyDataSetChanged()
                 progressBar.visibility = View.GONE
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
+                Log.e(TAG, "Failed to load data: ${databaseError.message}")
+                progressBar.visibility = View.GONE
             }
         })
     }
-
-    // AGGIUNGERE METODO PER CERCARE
-
-    //..
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
-        // Trova l'oggetto SearchView e imposta il listener
         val searchItem = menu.findItem(R.id.app_bar_search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!query.isNullOrBlank()) {
-                    //Log.d("SearchViewInput", "Query submitted: $query")
-                    //retrieveDataFromFirebase(query.trim())
-                }
+                query?.let { fetchData(modWords(it)) }
                 return true
             }
             override fun onQueryTextChange(newText: String?): Boolean {
-                //Log.d("SearchViewInput", "Query text changed: $newText")
                 if (newText.isNullOrBlank()) {
-                    //Log.d("SearchViewInput", "Query text changed: Showing all items")
-                    ///retrieveDataFromFirebase()  // Carica tutti gli elementi se non viene digitato nulla o il testo è cancellato
+                    fetchData() // Fetch all items if text is cleared
+                } else {
+                    fetchData(modWords(newText))
                 }
                 return true
             }
         })
         searchView.setOnSearchClickListener {
-            // Quando la barra di ricerca viene aperta, rendi invisibile l'elemento delle impostazioni
             val settingsMenuItem = menu.findItem(R.id.action_logout)
             settingsMenuItem.isVisible = false
         }
         searchView.setOnCloseListener {
-            // Quando la barra di ricerca viene chiusa, rendi visibile l'elemento delle impostazioni
             val settingsMenuItem = menu.findItem(R.id.action_logout)
             settingsMenuItem.isVisible = true
             false
@@ -222,27 +202,36 @@ class BookFragment : Fragment() {
 
     private fun updateBookingStatus(selectedItem: BookItem) {
         val database = FirebaseDatabase.getInstance()
-        val myRef = database.reference.child(selectedItem.type).child(selectedItem.ref)
-        Log.d("REF", selectedItem.ref)
-        // Crea una mappa per aggiornare i valori desiderati nel database
-        val updates = HashMap<String, Any>()
-        updates["userId"] = "null"
-        updates["available"] = true
-        myRef.updateChildren(updates)
-            .addOnSuccessListener {
-                // Aggiorna solo l'elemento selezionato localmente
-                selectedItem.userId = "null"
-                selectedItem.available = true
-                // Aggiorna l'adapter
-                adapter.notifyDataSetChanged()
-                // Ricarica la ListView
-                reloadListView()
-                Toast.makeText(context, "${selectedItem.title} restituito con successo", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, "Errore durante l'aggiornamento dell'elemento", exception)
-                Toast.makeText(context, "${selectedItem.title} non restituito", Toast.LENGTH_SHORT).show()
-            }
+        // Verifica che il riferimento sia valido e non vuoto
+        if (selectedItem.ref.isNotEmpty()) {
+            val myRef = database.getReference(selectedItem.type).child(selectedItem.ref)
+            Log.d("REF", selectedItem.ref)
+            // Crea una mappa per aggiornare i valori desiderati nel database
+            val updates = hashMapOf<String, Any>(
+                "userId" to "null",
+                "available" to true
+            )
+            myRef.updateChildren(updates)
+                .addOnSuccessListener {
+                    // Success: Aggiorna lo stato locale dell'oggetto
+                    selectedItem.userId = "null"
+                    selectedItem.available = true
+                    // Notifica l'adapter delle modifiche
+                    adapter.notifyDataSetChanged()
+                    // Ricarica la ListView
+                    reloadListView()
+                    Toast.makeText(context, "${selectedItem.title} restituito con successo", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    // Handle failure
+                    Log.e(TAG, "Errore durante l'aggiornamento dell'elemento: ", exception)
+                    Toast.makeText(context, "${selectedItem.title} non restituito", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            // Handle case where the reference is not properly set
+            Log.e(TAG, "Riferimento non valido per l'elemento selezionato: ${selectedItem.title}")
+            Toast.makeText(context, "Errore: Rif dell'elemento non trovato.", Toast.LENGTH_LONG).show()
+        }
     }
     private fun reloadListView() {
         mediaItems.clear() // Pulisce la lista dei mediaItems
